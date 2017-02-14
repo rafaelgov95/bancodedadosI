@@ -90,10 +90,10 @@ public class Agenda extends ControllerDaos {
     private void menuInterno(Contato c) throws SQLException, IOException {
         boolean flag = true;
         while (flag) {
-            System.out.println("\nMenu Logado: ");
-            System.out.println("1 - Update Contato");
-            System.out.println("2 - Delete Contato");
-            System.out.println("0 - Voltar para o Menu principal");
+            System.out.println("\nMenu Logado: \n"
+                    + "1 - Update Contato\n"
+                    + "2 - Delete Contato\n"
+                    + "0 - Voltar para o Menu principal");
             int opcao = Integer.parseInt(ler.readLine());
             switch (opcao) {
                 case 1:

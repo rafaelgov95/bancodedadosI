@@ -15,8 +15,8 @@ public class DAOFactory {
     private final ContatoDAO contatoDAO;
 
     private DAOFactory() {
-        this.contatoDAO = new ContatoDAO();
         this.telefoneDAO = new TelefoneDAO();
+        this.contatoDAO = new ContatoDAO();
     }
     
     
