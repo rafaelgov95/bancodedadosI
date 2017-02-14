@@ -20,15 +20,12 @@ import model.dao.DAOFactory;
  */
 public class ControllerDaos {
 
-    public void CreateContato(Contato c) throws IOException, SQLException {
+    public void DaoContato(Contato c) throws IOException, SQLException {
         ContatoDAO cDao = DAOFactory.getInstance().getContatoDAO();
         cDao.save(c);
     }
 
-    public void UpdateContato(Contato c) throws IOException, SQLException {
-        ContatoDAO cDao = DAOFactory.getInstance().getContatoDAO();
-        cDao.update(c);
-    }
+    
 
     public Contato ByContato(String procurado, boolean isNumero) throws SQLException {
 

@@ -59,19 +59,19 @@ public class ContatoDAO extends ReadWriteDAO<Contato, Integer> {
 
     @Override
     protected void update(Connection conn, Contato bean) throws SQLException {
-        final String sql = "update Agenda.Contatos set nome =?,data_nascimento=? where codigo=?";
+        final String sql = "update Agenda.Contatos set nome = ? , data_nascimento = ? where codigo = ?";
         conn.setAutoCommit(false);
         try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, bean.getNome());
             ps.setObject(2, bean.getData_nascimento() != null ? Date.valueOf(bean.getData_nascimento()) : null);
             ps.setInt(3, bean.getCodigo());
             ps.executeUpdate();
-            System.out.println(bean.getData_nascimento() != null ? Date.valueOf(bean.getData_nascimento()) : null);
             TelefoneDAO dao = DAOFactory.getInstance().getTelefoneDAO();
-
             for (Telefone t : dao.getAll(conn)) {
                 dao.save(t, bean.getCodigo());
             }
+            conn.commit();
+
         } catch (SQLException ex) {
             conn.rollback();
             throw ex;

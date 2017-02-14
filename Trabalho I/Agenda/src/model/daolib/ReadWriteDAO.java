@@ -62,7 +62,9 @@ public abstract class ReadWriteDAO<B extends Bean<T>, T extends Serializable> ex
      */
     public void update(B bean) throws SQLException {
         try (Connection conn = db.getConnection()) {
+            System.out.println("CHEGO AQUI Update2");
             update(conn, bean);
+           
         }
     }
 
@@ -91,6 +93,7 @@ public abstract class ReadWriteDAO<B extends Bean<T>, T extends Serializable> ex
     public void save(B bean, Serializable... dependencies) throws SQLException {
         try (Connection conn = db.getConnection()) {
             save(conn, bean, dependencies);
+
         }
     }
 
@@ -109,7 +112,7 @@ public abstract class ReadWriteDAO<B extends Bean<T>, T extends Serializable> ex
      * @throws SQLException
      */
     public void save(Connection conn, B bean, Serializable... dependencies) throws SQLException {
-        if (bean.getCodigo()== null) {
+        if (bean.getCodigo() == null) {
             insert(conn, bean, dependencies);
         } else {
             update(conn, bean);

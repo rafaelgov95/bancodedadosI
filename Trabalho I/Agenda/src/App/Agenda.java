@@ -46,7 +46,7 @@ public class Agenda extends ControllerDaos {
             Contato c = new Contato();;
             switch (opcao) {
                 case 1:
-                    CreateContato(CriarContato(c));
+                    DaoContato(CriarContato(c));
                     System.out.println("*******************************\n"
                             + "Contato adicionado com sucesso!\n"
                             + "*******************************\n");
@@ -97,7 +97,7 @@ public class Agenda extends ControllerDaos {
             int opcao = Integer.parseInt(ler.readLine());
             switch (opcao) {
                 case 1:
-                    UpdateContato(CriarContato(c));
+                    DaoContato(CriarContato(c));
                     break;
                 case 2:
                     DelContato(c);
