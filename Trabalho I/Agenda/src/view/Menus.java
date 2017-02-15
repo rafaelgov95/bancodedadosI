@@ -40,22 +40,25 @@ public class Menus {
                 + "0 - Voltar para o Menu principal");
     }
 
-    public static void ModelTelefone(Telefone t) {
-
-        System.out.println("    DDD: " + t.getDDD());
-        System.out.println("    Número: " + t.getNumero());
-        System.out.println("    Tipo: " + t.getTipo());
-        System.out.println(t.getPrincipal() == true ? "Principal ✔" : "Principal ✖");
+    public static void ModelTelefone(Telefone t, int index) {
+        System.out.println("              Telefone Nº: " + index);
+        System.out.println("                        DDD: " + t.getDDD());
+        System.out.println("                        Número: " + t.getNumero());
+        System.out.println("                        Tipo: " + t.getTipo());
+        System.out.println(t.getPrincipal() == true ? "                        Principal ✔\n" : "                        Principal ✖\n");
 
     }
 
-    public static void ModelContato(Contato c) {
-        System.out.println("\n----------------------------\n");
-        System.out.println("Nome: " + c.getNome());
-        System.out.print("Aniversário: ");
-        System.out.println(c.getData_nascimento() == null ? "Não cadastrado" : c.getData_nascimento());
-        System.out.print("Telefone(s): ");
-        System.out.println(c.getListaTelefones().isEmpty() ? "Não há telefones cadastrados" : "");
+    public static void ModelContato(Contato c, int index) {
+
+        System.out.println("Contato Nº: " + index);
+        System.out.println("-------------------------------------------------------");
+        System.out.println("          Nome: " + c.getNome());
+        System.out.print("          Aniversário: ");
+        System.out.println(c.getData_nascimento() == null ? "Não cadastrado" :c.getData_nascimento());
+        System.out.println("          Data de Criação da Conta: " + c.getData_criacao());
+        System.out.print("          Telefone(s): ");
+        System.out.println(c.getListaTelefones().isEmpty() ? "          Não há telefones cadastrados" : "");
     }
 
     public Contato CriarContato(Contato c) throws IOException {

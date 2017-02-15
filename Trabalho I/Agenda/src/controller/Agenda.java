@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package App;
+package controller;
 
-import controller.ControllerDaos;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,6 +12,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import model.bean.Contato;
+import model.dao.ContatoDAO;
+import model.dao.DAOFactory;
 import util.DatabaseManager;
 import view.Alertas;
 import view.Menus;
@@ -28,10 +29,10 @@ public class Agenda extends ControllerDaos {
     Menus menu = new Menus();
 
     public Agenda() throws SQLException, IOException {
-        inicirAgenda();
+        MenuPrincipal();
     }
 
-    private void inicirAgenda() throws SQLException, IOException {
+    private void MenuPrincipal() throws SQLException, IOException {
 
         while (true) {
             Menus.MenuPrincipal();
@@ -43,10 +44,10 @@ public class Agenda extends ControllerDaos {
                     break;
                 case 2:
                     Alertas.InformeNomeNumero();
-                    menuAcessado(ByContato(ler.readLine(), conn));
+                    MenuDeAcessado(FindContato(ler.readLine(), conn));
                     break;
                 case 3:
-                    imprimirAgenda();
+                    PrintAgenda();
                     break;
                 case 0:
                     System.exit(0);
@@ -57,19 +58,7 @@ public class Agenda extends ControllerDaos {
         }
     }
 
-    private void menuAcessado(List<Contato> c) throws SQLException, IOException {
-        if (c.isEmpty()) {
-            Alertas.ContatoNaoExiste();
-        } else {
-            for (Contato contato : c) {
-                imprimirContato(contato);
-            }
-            System.out.println("Informe o id para abrir Menu");
-            menuInterno(c.get(Integer.parseInt(ler.readLine())));
-        }
-    }
-
-    private void menuInterno(Contato c) throws SQLException, IOException {
+    private void MenuInterno(Contato c) throws SQLException, IOException {
         boolean flag = true;
         while (flag) {
             Menus.MenuInterno();
@@ -89,8 +78,23 @@ public class Agenda extends ControllerDaos {
         }
     }
 
-    private void DelContato(Contato c) throws SQLException {
-        DeleteContato(c);
-        Alertas.ContaRemovidaSucesso();
+    private void MenuDeAcessado(List<Contato> c) throws SQLException, IOException {
+        if (c.isEmpty()) {
+            Alertas.ContatoNaoExiste();
+        } else {
+            for (int i = 0; i < c.size(); i++) {
+                PrintContato(c.get(i), i);
+                Alertas.Espaco();
+            }
+            Alertas.InformeNumeroContato();
+            MenuInterno(c.get(Integer.parseInt(ler.readLine()) - 1));
+        }
     }
+
+    public void PrintAgenda() throws SQLException, IOException {
+        ContatoDAO cDao = DAOFactory.getInstance().getContatoDAO();
+        List<Contato> listaContatos = cDao.getAll();
+        MenuDeAcessado(listaContatos);
+    }
+
 }

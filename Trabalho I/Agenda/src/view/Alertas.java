@@ -32,8 +32,16 @@ public class Alertas {
                 + "Não consta em sua agenda um contato com este número ou nome!\n"
                 + "*******************************\n");
     }
-    
-    public static void DefaultCase(){
-    System.out.println("Esta opção não existe! Tente novamente.");
+
+    public static void DefaultCase() {
+        System.out.println("Esta opção não existe! Tente novamente.");
+    }
+
+    public static void InformeNumeroContato() {
+        System.out.println("\n Informe o Index para abrir MenuInterno do Contato");
+    }
+
+    public static void Espaco() {
+        System.out.println("-------------------------------------------------------");
     }
 }
