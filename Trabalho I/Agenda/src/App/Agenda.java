@@ -6,12 +6,14 @@
 package App;
 
 import controller.ControllerDaos;
+import controller.ControllerDaos;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import model.bean.Contato;
 import model.bean.Telefone;
 import model.bean.TipoTelefone;
@@ -36,9 +38,8 @@ public class Agenda extends ControllerDaos {
             System.out.println("\n------------ AGENDA--------------------\n"
                     + "------------Menu Principal-------------\n"
                     + "---1 - Inserir um novo contato---------\n"
-                    + "---2 - Buscar um contato pelo nome ----\n"
-                    + "---3 - Buscar um contato pelo número --\n"
-                    + "---4 - Vizualizar minha agenda completa\n"
+                    + "---2 - Buscar um contato pelo nome ou numero ----\n"
+                    + "---3 - Vizualizar minha agenda completa\n"
                     + "---0 - Sair da Agenda -----------------");
 
             System.out.print("\nDigite a opção desejada: ");
@@ -53,13 +54,10 @@ public class Agenda extends ControllerDaos {
                     break;
                 case 2:
                     System.out.println("Digite um nome para buscar em sua agenda: ");
-                    menuAcessado(ByContato(ler.readLine(), false));
+                    menuAcessado(ByContato(ler.readLine(), conn));
                     break;
+
                 case 3:
-                    System.out.println("Digite um número para buscar em sua agenda: ");
-                    menuAcessado(ByContato(ler.readLine(), true));
-                    break;
-                case 4:
                     imprimirAgenda();
                     break;
 
@@ -72,8 +70,8 @@ public class Agenda extends ControllerDaos {
         }
     }
 
-    private void menuAcessado(Contato c) throws SQLException, IOException {
-        if (c == null) {
+    private void menuAcessado(List<Contato> c) throws SQLException, IOException {
+        if (c.isEmpty()) {
             System.out.println("*******************************\n"
                     + "Não consta em sua agenda um contato com este número!\n"
                     + "*******************************\n");
@@ -82,8 +80,11 @@ public class Agenda extends ControllerDaos {
             System.out.println("*******************************\n"
                     + "CONTATO ENCONTRADO\n"
                     + "*******************************\n");
-            imprimirContato(c);
-            menuInterno(c);
+            for (Contato contato : c) {
+                imprimirContato(contato);
+            }
+            System.out.println("Informe o id para abrir Menu");
+            menuInterno(c.get(Integer.parseInt(ler.readLine())));
         }
     }
 

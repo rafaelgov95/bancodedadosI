@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.bean.Contato;
 import model.bean.Telefone;
 import model.bean.TipoTelefone;
 
@@ -101,7 +102,7 @@ public class TelefoneDAO extends ReadWriteDAO<Telefone, Integer> {
         return telefones;
     }
 
-    protected List<Telefone> findByContatoID(Connection conn, Integer contatoID) throws SQLException {
+    public List<Telefone> findByID(Connection conn, Integer contatoID) throws SQLException {
         final String sql = "SELECT * FROM Agenda.Telefones WHERE contato_codigo = ?";
         List<Telefone> telefones = new ArrayList<>();
 
@@ -110,6 +111,21 @@ public class TelefoneDAO extends ReadWriteDAO<Telefone, Integer> {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     telefones.add(resultSetToBean(conn, rs));
+                }
+            }
+        }
+        return telefones;
+    }
+
+    public List<Contato> findByNumber(Connection conn, Integer number) throws SQLException {
+        final String sql = "SELECT * FROM Agenda.Telefones WHERE numero = ?";
+        List<Contato> telefones = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, number);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ContatoDAO cDao = DAOFactory.getInstance().getContatoDAO();
+                    return cDao.findByName(conn, rs.getInt("contato_condigo"));
                 }
             }
         }

@@ -115,20 +115,43 @@ public class ContatoDAO extends ReadWriteDAO<Contato, Integer> {
         return contatos;
     }
 
-    private Contato resultSetToBean(Connection conn, ResultSet rs) throws SQLException {
+    @Override
+    public List<Contato> findByID(Connection conn, Integer contatoID) throws SQLException {
+        final String sql = "SELECT * FROM Agenda.Contatos WHERE contato_codigo = ?";
+        List<Contato> ListaContato = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, contatoID);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ListaContato.add(resultSetToBean(conn, rs));
+                }
+            }
+        }
+        return ListaContato;
+    }
 
+    public List<Contato> findByName(Connection conn, String nome) throws SQLException {
+        final String sql = "SELECT * FROM Agenda.Contatos WHERE nome = ?";
+        List<Contato> ListaContato = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nome);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ListaContato.add(resultSetToBean(conn, rs));
+                }
+            }
+        }
+        return ListaContato;
+    }
+
+    private Contato resultSetToBean(Connection conn, ResultSet rs) throws SQLException {
         TelefoneDAO dao = DAOFactory.getInstance().getTelefoneDAO();
         Contato contato = new Contato();
-
         setGeneratedKey(contato, rs.getInt(1));
         contato.setNome(rs.getString("nome"));
         contato.setData_nascimento(rs.getDate("data_nascimento") != null ? rs.getDate("data_nascimento").toLocalDate() : null);
-        List<Telefone> tst = dao.findByContatoID(conn, contato.getCodigo());
-        for (int i = 0; i < tst.size(); i++) {
-            contato.getListaTelefones().add(tst.get(i));
-            tst.remove(i);
-        }
-
+        contato.getListaTelefones().addAll(dao.findByID(conn, contato.getCodigo()));
         return contato;
     }
+
 }

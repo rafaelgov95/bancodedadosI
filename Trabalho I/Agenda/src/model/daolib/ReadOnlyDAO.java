@@ -9,11 +9,11 @@ package model.daolib;
  *
  * @author rafael
  */
-
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import model.bean.Telefone;
 import model.daolib.Bean;
 import model.dao.DAOFactory;
 import util.DatabaseManager;
@@ -48,7 +48,7 @@ public abstract class ReadOnlyDAO<B extends Bean<T>, T extends Serializable> {
     protected DatabaseManager getDatabaseManager() {
         return db;
     }
-    
+
     /**
      * Retorna a fábrica de DAOs.
      *
@@ -97,6 +97,8 @@ public abstract class ReadOnlyDAO<B extends Bean<T>, T extends Serializable> {
     }
 
     protected abstract List<B> getAll(Connection conn) throws SQLException;
+
+    public abstract List<B> findByID(Connection conn, Integer contatoID) throws SQLException;
 
 //    protected abstract B resultSetToBean(Connection conn, ResultSet rs) throws SQLException;
 }

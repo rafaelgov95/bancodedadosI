@@ -6,6 +6,7 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -13,6 +14,7 @@ import model.bean.Contato;
 import model.bean.Telefone;
 import model.dao.ContatoDAO;
 import model.dao.DAOFactory;
+import model.dao.TelefoneDAO;
 
 /**
  *
@@ -25,25 +27,16 @@ public class ControllerDaos {
         cDao.save(c);
     }
 
-    
+    public List<Contato> ByContato(String procurado, Connection conn) throws SQLException {
 
-    public Contato ByContato(String procurado, boolean isNumero) throws SQLException {
+        if (procurado.contains("^[a-Z]")) {
+            TelefoneDAO fDao = DAOFactory.getInstance().getTelefoneDAO();
+            return fDao.findByID(conn, Integer.parseInt(procurado));
 
-        ContatoDAO cDao = DAOFactory.getInstance().getContatoDAO();
-        List<Contato> listaContatos = cDao.getAll();
-
-        for (Contato c : listaContatos) {
-            if (isNumero) {
-                for (Telefone t : c.getListaTelefones()) {
-                    if (t.getNumero().equals(procurado)) {
-                        return c;
-                    }
-                }
-            } else if (c.getNome().equals(procurado)) {
-                return c;
-            }
+        } else {
+            ContatoDAO cDao = DAOFactory.getInstance().getContatoDAO();
+            return cDao.findByName(conn, procurado);
         }
-        return null;
     }
 
     public void DeleteContato(Contato c) throws SQLException {
@@ -61,7 +54,7 @@ public class ControllerDaos {
     }
 
     public void imprimirContato(Contato c) {
-        System.out.println("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n");
+        System.out.println("\n----------------------------\n");
         System.out.println("Nome: " + c.getNome());
         System.out.print("Aniversário: ");
         System.out.println(c.getData_nascimento() == null ? "Não cadastrado" : c.getData_nascimento());
