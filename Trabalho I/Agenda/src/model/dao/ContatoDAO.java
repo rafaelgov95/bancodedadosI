@@ -115,19 +115,33 @@ public class ContatoDAO extends ReadWriteDAO<Contato, Integer> {
         return contatos;
     }
 
-    @Override
-    public List<Contato> findByID(Connection conn, Integer contatoID) throws SQLException {
+    public Contato findByID(Connection conn, Integer contatoCodigo) throws SQLException {
         final String sql = "SELECT * FROM Agenda.Contatos WHERE contato_codigo = ?";
-        List<Contato> ListaContato = new ArrayList<>();
+        Contato c = new Contato();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, contatoID);
+            ps.setInt(1, contatoCodigo);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    ListaContato.add(resultSetToBean(conn, rs));
+                while (rs.first()) {
+                    c = resultSetToBean(conn, rs);
                 }
             }
         }
-        return ListaContato;
+        return c;
+    }
+
+    public List<Contato> findByNumberTelefone(Connection conn, Integer number) throws SQLException {
+        final String sql = "SELECT * FROM Agenda.Telefones WHERE numero = ?";
+        List<Contato> contatos = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, number);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ContatoDAO cDao = DAOFactory.getInstance().getContatoDAO();
+                    contatos.add(findByID(conn, rs.getInt("contatos_codigo")));
+                }
+            }
+        }
+        return contatos;
     }
 
     public List<Contato> findByName(Connection conn, String nome) throws SQLException {

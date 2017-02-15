@@ -117,20 +117,7 @@ public class TelefoneDAO extends ReadWriteDAO<Telefone, Integer> {
         return telefones;
     }
 
-    public List<Contato> findByNumber(Connection conn, Integer number) throws SQLException {
-        final String sql = "SELECT * FROM Agenda.Telefones WHERE numero = ?";
-        List<Contato> telefones = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, number);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    ContatoDAO cDao = DAOFactory.getInstance().getContatoDAO();
-                    return cDao.findByName(conn, rs.getInt("contato_condigo"));
-                }
-            }
-        }
-        return telefones;
-    }
+    
 
     private Telefone resultSetToBean(Connection conn, ResultSet rs) throws SQLException {
         Telefone telefone = new Telefone();

@@ -6,18 +6,16 @@
 package App;
 
 import controller.ControllerDaos;
-import controller.ControllerDaos;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 import model.bean.Contato;
-import model.bean.Telefone;
-import model.bean.TipoTelefone;
 import util.DatabaseManager;
+import view.Alertas;
+import view.Menus;
 
 /**
  *
@@ -27,6 +25,7 @@ public class Agenda extends ControllerDaos {
 
     BufferedReader ler = new BufferedReader(new InputStreamReader(System.in));
     Connection conn = DatabaseManager.getInstance().getConnection();
+    Menus menu = new Menus();
 
     public Agenda() throws SQLException, IOException {
         inicirAgenda();
@@ -35,36 +34,24 @@ public class Agenda extends ControllerDaos {
     private void inicirAgenda() throws SQLException, IOException {
 
         while (true) {
-            System.out.println("\n------------ AGENDA--------------------\n"
-                    + "------------Menu Principal-------------\n"
-                    + "---1 - Inserir um novo contato---------\n"
-                    + "---2 - Buscar um contato pelo nome ou numero ----\n"
-                    + "---3 - Vizualizar minha agenda completa\n"
-                    + "---0 - Sair da Agenda -----------------");
-
-            System.out.print("\nDigite a opção desejada: ");
+            Menus.MenuPrincipal();
             int opcao = Integer.parseInt(ler.readLine());
-            Contato c = new Contato();;
             switch (opcao) {
                 case 1:
-                    DaoContato(CriarContato(c));
-                    System.out.println("*******************************\n"
-                            + "Contato adicionado com sucesso!\n"
-                            + "*******************************\n");
+                    Contato c = new Contato();
+                    SaveContato(menu.CriarContato(c));
                     break;
                 case 2:
-                    System.out.println("Digite um nome para buscar em sua agenda: ");
+                    Alertas.InformeNomeNumero();
                     menuAcessado(ByContato(ler.readLine(), conn));
                     break;
-
                 case 3:
                     imprimirAgenda();
                     break;
-
                 case 0:
                     System.exit(0);
                 default:
-                    System.out.println("Esta opção não existe! Tente novamente.");
+                    Alertas.DefaultCase();
                     break;
             }
         }
@@ -72,14 +59,8 @@ public class Agenda extends ControllerDaos {
 
     private void menuAcessado(List<Contato> c) throws SQLException, IOException {
         if (c.isEmpty()) {
-            System.out.println("*******************************\n"
-                    + "Não consta em sua agenda um contato com este número!\n"
-                    + "*******************************\n");
-
+            Alertas.ContatoNaoExiste();
         } else {
-            System.out.println("*******************************\n"
-                    + "CONTATO ENCONTRADO\n"
-                    + "*******************************\n");
             for (Contato contato : c) {
                 imprimirContato(contato);
             }
@@ -91,14 +72,11 @@ public class Agenda extends ControllerDaos {
     private void menuInterno(Contato c) throws SQLException, IOException {
         boolean flag = true;
         while (flag) {
-            System.out.println("\nMenu Logado: \n"
-                    + "1 - Update Contato\n"
-                    + "2 - Delete Contato\n"
-                    + "0 - Voltar para o Menu principal");
+            Menus.MenuInterno();
             int opcao = Integer.parseInt(ler.readLine());
             switch (opcao) {
                 case 1:
-                    DaoContato(CriarContato(c));
+                    SaveContato(menu.CriarContato(c));
                     break;
                 case 2:
                     DelContato(c);
@@ -113,46 +91,6 @@ public class Agenda extends ControllerDaos {
 
     private void DelContato(Contato c) throws SQLException {
         DeleteContato(c);
-        System.out.println("\n*****************************");
-        System.out.println("CONTATO DELETADO COM SUCESSO!");
-        System.out.println("*****************************");
+        Alertas.ContaRemovidaSucesso();
     }
-
-    private Contato CriarContato(Contato c) throws IOException {
-        System.out.print("Digite o nome do contato: ");
-        String nome = ler.readLine();
-        System.out.print("\nDigite a data de nascimento, separada por '/': ");
-
-        String dataCriacao[] = ler.readLine().split("/");
-        if (dataCriacao.length != 1) {
-            c.setData_nascimento(LocalDate.of(Integer.parseInt(dataCriacao[2]), Integer.parseInt(dataCriacao[1]), Integer.parseInt(dataCriacao[0])));
-        } else {
-            c.setData_nascimento(null);
-        }
-
-        c.setNome(nome);
-
-        while (true) {
-            System.out.println("Para adicionar um novo telefone digite '1'. Digite '0' para sair.");
-            if (ler.readLine().equals("0")) {
-                break;
-            }
-            c.getListaTelefones().add(criarTelefone());
-        }
-        return c;
-    }
-
-    private Telefone criarTelefone() throws IOException {
-        Telefone t = new Telefone();
-        System.out.println("Digite o DDD do telefone: ");
-        t.setDDD(ler.readLine());
-        System.out.println("Digite um número de telefone: ");
-        t.setNumero(ler.readLine());
-        System.out.println("Defina o tipo (Celular, Residencial, Comercial): ");
-        t.setTipo(TipoTelefone.valueOf(ler.readLine().toUpperCase()));
-        System.out.println("Principal? (s/n) ");
-        t.setPrincipal(ler.readLine().equals("s"));;
-        return t;
-    }
-
 }

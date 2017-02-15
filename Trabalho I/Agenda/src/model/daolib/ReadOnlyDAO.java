@@ -98,7 +98,5 @@ public abstract class ReadOnlyDAO<B extends Bean<T>, T extends Serializable> {
 
     protected abstract List<B> getAll(Connection conn) throws SQLException;
 
-    public abstract List<B> findByID(Connection conn, Integer contatoID) throws SQLException;
-
 //    protected abstract B resultSetToBean(Connection conn, ResultSet rs) throws SQLException;
 }
