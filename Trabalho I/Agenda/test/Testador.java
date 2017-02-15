@@ -10,7 +10,7 @@
  */
 public class Testador {
     public static void main(String[] args) {
-         new TelefoneTester().start();
+//         new TelefoneTester().start();
          new ContatoTester().start();
     }
 }

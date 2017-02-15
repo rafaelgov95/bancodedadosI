@@ -1,6 +1,6 @@
 package App;
 
-import controller.Agenda;
+import controller.ControllerAgenda;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String[] args) throws IOException, SQLException {
-        new Agenda();        
+        new ControllerAgenda();        
     }
 
 }

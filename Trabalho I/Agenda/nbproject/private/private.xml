@@ -3,20 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/src/model/bean/Contato.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/test/DAOTester.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/test/ContatoTester.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/test/TelefoneTester.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/src/App/Main.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/src/model/dao/ContatoDAO.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/src/model/bean/TipoTelefone.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/src/model/daolib/ReadWriteDAO.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/src/model/dao/TelefoneDAO.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/test/Testador.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/src/model/bean/Telefone.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/src/controller/ControllerDaos.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/src/App/Agenda.java</file>
-            <file>file:/home/rafael/tempAgenda/SistemasOperacionais/Agenda/src/model/dao/DAOFactory.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/test/TelefoneTester.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/src/model/dao/ContatoDAO.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/src/model/daolib/ReadOnlyDAO.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/test/ContatoTester.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/src/view/Menus.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/src/model/daolib/ReadWriteDAO.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/src/model/dao/TelefoneDAO.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/src/model/dao/DAOFactory.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/test/Testador.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/test/DAOTester.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/src/model/daolib/Bean.java</file>
         </group>
     </open-files>
 </project-private>

@@ -37,7 +37,7 @@ public class Bean<T extends Serializable> implements Serializable {
     /**
      * @param codigo the id to set
      */
-    protected void setId(T codigo) {
+    protected void setCodigo(T codigo) {
         this.codigo = codigo;
     }
 

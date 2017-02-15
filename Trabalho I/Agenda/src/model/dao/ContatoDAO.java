@@ -33,6 +33,7 @@ public class ContatoDAO extends ReadWriteDAO<Contato, Integer> {
 
     @Override
     protected void insert(Connection conn, Contato bean, Serializable... dependencies) throws SQLException {
+        System.out.println(bean.getNome());
         final String sql = "insert into Agenda.Contatos (nome,data_nascimento) values (?,?)";
         conn.setAutoCommit(false);
         try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {

@@ -12,7 +12,6 @@ package model.daolib;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
-import model.daolib.Bean;
 
 /**
  *
@@ -27,8 +26,8 @@ public abstract class ReadWriteDAO<B extends Bean<T>, T extends Serializable> ex
         super(clazz);
     }
 
-    protected void setGeneratedKey(B bean, T id) {
-        bean.setId(id);
+    protected void setGeneratedKey(B bean, T codigo) {
+        bean.setCodigo(codigo);
     }
 
     /**
@@ -62,9 +61,7 @@ public abstract class ReadWriteDAO<B extends Bean<T>, T extends Serializable> ex
      */
     public void update(B bean) throws SQLException {
         try (Connection conn = db.getConnection()) {
-            System.out.println("CHEGO AQUI Update2");
-            update(conn, bean);
-           
+            update(conn, bean);           
         }
     }
 

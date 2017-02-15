@@ -31,15 +31,15 @@ public class ContatoTester extends DAOTester<Contato, Integer> {
         output.append("Nome: ").append(bean.getNome()).append("\n");
         output.append("Data criação: ").append(bean.getData_criacao()).append("\n");
         output.append("Data nascimento: ").append(bean.getData_nascimento()).append("\n");
-        output.append("Telefones: ").append(bean.getListaTelefones()).append("\n"); 
-        System.out.println("======Lista de Telefones======");
-        if(bean.getListaTelefones().isEmpty()){
-            System.out.println("Sem Telefone Registrado");
-        }else{
-        bean.getListaTelefones().forEach((t) -> {
-            System.out.println(t.getNumero());
-        });
-        }
+//        output.append("Telefones: ").append(bean.getListaTelefones()).append("\n"); 
+//        System.out.println("======Lista de Telefones======");
+//        if(bean.getListaTelefones().isEmpty()){
+//            System.out.println("Sem Telefone Registrado");
+//        }else{
+//        bean.getListaTelefones().forEach((t) -> {
+//            System.out.println(t.getNumero());
+//        });
+//        }
     }
 
     @Override
@@ -47,14 +47,14 @@ public class ContatoTester extends DAOTester<Contato, Integer> {
         Contato c = new Contato();
         c.setNome("Rafael Viana");
         c.setData_nascimento(LocalDate.of(1995, Month.JUNE, 22));
-        List<Telefone> lista;
-        lista = new ArrayList<>();
-        Telefone t = new Telefone();
-        t.setDDD("67");
-        t.setNumero("999-507-979");
-        t.setPrincipal(true);
-        t.setTipo(TipoTelefone.CELULAR);
-        lista.add(t);
+//        List<Telefone> lista;
+//        lista = new ArrayList<>();
+//        Telefone t = new Telefone();
+//        t.setDDD("67");
+//        t.setNumero("999-507-979");
+//        t.setPrincipal(true);
+//        t.setTipo(TipoTelefone.CELULAR);
+//        lista.add(t);
         return c;
     }
 
@@ -65,7 +65,7 @@ public class ContatoTester extends DAOTester<Contato, Integer> {
 
     @Override
     protected void insertDependencyList(List<Serializable> dependencies) {
-        dependencies.add(1);
+        dependencies.add(0);
     }
 
 }

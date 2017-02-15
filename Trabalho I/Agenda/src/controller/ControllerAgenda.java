@@ -22,13 +22,13 @@ import view.Menus;
  *
  * @author rafael
  */
-public class Agenda extends ControllerDaos {
+public class ControllerAgenda extends ControllerDaos {
 
     BufferedReader ler = new BufferedReader(new InputStreamReader(System.in));
     Connection conn = DatabaseManager.getInstance().getConnection();
     Menus menu = new Menus();
 
-    public Agenda() throws SQLException, IOException {
+    public ControllerAgenda() throws SQLException, IOException {
         MenuPrincipal();
     }
 
@@ -69,6 +69,7 @@ public class Agenda extends ControllerDaos {
                     break;
                 case 2:
                     DelContato(c);
+                    Alertas.ContaRemovidaSucesso();
                     flag = false;
                     break;
                 case 0:
@@ -95,6 +96,14 @@ public class Agenda extends ControllerDaos {
         ContatoDAO cDao = DAOFactory.getInstance().getContatoDAO();
         List<Contato> listaContatos = cDao.getAll();
         MenuDeAcessado(listaContatos);
+    }
+
+    public void PrintContato(Contato c, int index) {
+        Menus.ModelContato(c, index + 1);
+        for (int i = 0; i < c.getListaTelefones().size(); i++) {
+            Menus.ModelTelefone(c.getListaTelefones().get(i), i + 1);
+        }
+
     }
 
 }

@@ -12,8 +12,6 @@ import java.util.List;
 import model.bean.Contato;
 import model.dao.ContatoDAO;
 import model.dao.DAOFactory;
-import view.Alertas;
-import view.Menus;
 
 /**
  *
@@ -40,16 +38,10 @@ public class ControllerDaos {
         cDao.delete(c);
     }
 
-    public void PrintContato(Contato c, int index) {
-        Menus.ModelContato(c, index + 1);
-        for (int i = 0; i < c.getListaTelefones().size(); i++) {
-            Menus.ModelTelefone(c.getListaTelefones().get(i), i + 1);
-        }
-
-    }
+   
 
     public void DelContato(Contato c) throws SQLException {
         DeleteContato(c);
-        Alertas.ContaRemovidaSucesso();
+        
     }
 }
