@@ -78,8 +78,8 @@ public class Menus {
         boolean menut = true;
         while (menut) {
             System.out.println(" ---------- Menu Telefone ---------- \n"
-                    + " ------ 1 - Adicionar Telefone -----  \n"
-                    + " ------ 0 - Finalizar Contato ------ ");
+                    + " ---- 1 - Adicionar Telefone -------  \n"
+                    + " ---- 0 - Finalizar Contato -------- ");
             String op = ler.readLine();
             switch (op) {
                 case "1":

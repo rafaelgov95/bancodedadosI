@@ -21,7 +21,9 @@ public class ControllerDaos {
 
     public void SaveContato(Contato c) throws IOException, SQLException {
         ContatoDAO cDao = DAOFactory.getInstance().getContatoDAO();
+        System.out.println("foi antes");
         cDao.save(c);
+        
     }
 
     public List<Contato> FindContato(String procurado, Connection conn) throws SQLException {
