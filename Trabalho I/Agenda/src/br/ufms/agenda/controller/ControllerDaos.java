@@ -27,7 +27,7 @@ public class ControllerDaos {
 
     public List<Contato> FindContato(String procurado, Connection conn) throws SQLException {
         ContatoDAO cDao = DAOFactory.getInstance().getContatoDAO();
-        System.out.println("------");
+      
         if (procurado.contains("^[a-Z]")) {
             return cDao.findByNumberTelefone(conn, Integer.parseInt(procurado));
         } else {

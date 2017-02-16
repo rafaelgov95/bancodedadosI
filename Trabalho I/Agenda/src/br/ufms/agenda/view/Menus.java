@@ -37,7 +37,7 @@ public class Menus {
         System.out.print("\n----------------- MENU DE OPÇÕES DO CONTATO Nº: " + contato + " ----------------- \n"
                 + "-------------------- 1 - Update Contato ---------------------------\n"
                 + "-------------------- 2 - Delete Contato ---------------------------\n"
-                + "-------------------- 0 - Voltar para o Menu principal -------------\n"
+                + "-------------------- 0 - Voltar para Menu Principal ---------------\n"
                 + "INFORME UMA OPÇÃO:");
     }
 

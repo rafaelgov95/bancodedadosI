@@ -36,7 +36,7 @@ public class ControllerAgenda extends ControllerDaos {
 
         while (true) {
             Menus.MenuPrincipal();
-            String opcao =ler.readLine();
+            String opcao = ler.readLine();
             switch (opcao) {
                 case "1":
                     Contato c = new Contato();
@@ -44,11 +44,10 @@ public class ControllerAgenda extends ControllerDaos {
                     break;
                 case "2":
                     Alertas.InformeNomeNumero();
-
                     MenuDeAcessado(FindContato(ler.readLine(), conn));
+
                     break;
                 case "3":
-                    Alertas.Espaco();
                     PrintAgenda();
                     break;
                 case "0":
@@ -82,6 +81,7 @@ public class ControllerAgenda extends ControllerDaos {
     }
 
     private void MenuDeAcessado(List<Contato> c) throws SQLException, IOException {
+        Alertas.Espaco();
         if (c.isEmpty()) {
             Alertas.ContatoNaoExiste();
         } else {
@@ -89,9 +89,17 @@ public class ControllerAgenda extends ControllerDaos {
                 PrintContato(c.get(i), i);
                 Alertas.Espaco();
             }
-            Alertas.InformeNumeroContato();
-            int n = Integer.parseInt(ler.readLine());
-            MenuInterno(c.get(n - 1), n);
+            if (c.size() == 1) {
+                MenuInterno(c.get(1-1), 1);
+            } else {
+                Alertas.InformeNumeroContato();
+                int n = Integer.parseInt(ler.readLine());
+                if ((n < 1) || ((n) > c.size())) {
+                    MenuDeAcessado(c);
+                } else {
+                    MenuInterno(c.get(n-1), n);
+                }
+            }
         }
     }
 
