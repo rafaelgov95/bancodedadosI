@@ -12,11 +12,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import br.ufms.agenda.model.bean.Contato;
+import br.ufms.agenda.model.bean.Telefone;
+import br.ufms.agenda.model.bean.TipoTelefone;
 import br.ufms.agenda.model.dao.ContatoDAO;
 import br.ufms.agenda.model.dao.DAOFactory;
 import br.ufms.agenda.util.DatabaseManager;
 import br.ufms.agenda.view.Alertas;
 import br.ufms.agenda.view.Menus;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -40,12 +44,11 @@ public class ControllerAgenda extends ControllerDaos {
             switch (opcao) {
                 case "1":
                     Contato c = new Contato();
-                    SaveContato(menu.CriarContato(c));
+                    SaveContato(CriarContato(c));
                     break;
                 case "2":
                     Alertas.InformeNomeNumero();
                     MenuDeAcessado(FindContato(ler.readLine(), conn));
-
                     break;
                 case "3":
                     PrintAgenda();
@@ -66,7 +69,8 @@ public class ControllerAgenda extends ControllerDaos {
             int opcao = Integer.parseInt(ler.readLine());
             switch (opcao) {
                 case 1:
-                    SaveContato(menu.CriarContato(c));
+                    MenuUpdate(c);
+                    flag = false;
                     break;
                 case 2:
                     DelContato(c);
@@ -74,6 +78,42 @@ public class ControllerAgenda extends ControllerDaos {
                     flag = false;
                     break;
                 case 0:
+                    flag = false;
+                    break;
+            }
+        }
+    }
+
+    public void SetData(Contato c) throws IOException, IOException {
+        String data = ler.readLine();
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        if (!data.equals("")) {
+            LocalDate dt = LocalDate.parse(data, f);
+            c.setData_nascimento(dt);
+        } else {
+            c.setData_nascimento(null);
+        }
+    }
+
+    private void MenuUpdate(Contato c) throws IOException, SQLException {
+        boolean flag = true;
+        while (flag) {
+            int opcao = Integer.parseInt(ler.readLine());
+            switch (opcao) {
+                case 1:
+                    //editar nome
+                    c.setNome(ler.readLine());
+                    break;
+                case 2:
+                    //editar data niver
+                    SetData(c);
+                    break;
+                case 3:
+                    //editar data niver
+
+                    break;
+                case 0:
+                    SaveContato(c);
                     flag = false;
                     break;
             }
@@ -90,14 +130,14 @@ public class ControllerAgenda extends ControllerDaos {
                 Alertas.Espaco();
             }
             if (c.size() == 1) {
-                MenuInterno(c.get(1-1), 1);
+                MenuInterno(c.get(1 - 1), 1);
             } else {
                 Alertas.InformeNumeroContato();
                 int n = Integer.parseInt(ler.readLine());
                 if ((n < 1) || ((n) > c.size())) {
                     MenuDeAcessado(c);
                 } else {
-                    MenuInterno(c.get(n-1), n);
+                    MenuInterno(c.get(n - 1), n);
                 }
             }
         }
@@ -115,6 +155,53 @@ public class ControllerAgenda extends ControllerDaos {
             Menus.ModelTelefone(c.getListaTelefones().get(i), i + 1);
         }
 
+    }
+     public Contato CriarContato(Contato c) throws IOException {
+        System.out.print("Nome do Contato: ");
+        String nome = ler.readLine();
+        System.out.print("Data de nascimento Exemplo:(22-07-1995): ");
+        String data = ler.readLine();
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        if (!data.equals("")) {
+            LocalDate dt = LocalDate.parse(data, f);
+            c.setData_nascimento(dt);
+        } else {
+            c.setData_nascimento(null);
+        }
+        c.setNome(nome);
+        boolean menut = true;
+        while (menut) {
+            System.out.println(" ---------- Menu Telefone ---------- \n"
+                    + " ---- 1 - Adicionar Telefone -------  \n"
+                    + " ---- 0 - Finalizar Contato -------- ");
+            String op = ler.readLine();
+            switch (op) {
+                case "1":
+                    c.getListaTelefones().add(criarTelefone());
+                    break;
+                case "0":
+                    menut = false;
+                    break;
+                default:
+                    System.out.println("OPÇÃO INVÁLIDA!");
+            }
+
+        }
+        Alertas.ContaAdicionadoSucesso();
+        return c;
+
+    }
+     private Telefone criarTelefone() throws IOException {
+        Telefone t = new Telefone();
+        System.out.println("Digite o DDD do telefone: ");
+        t.setDDD(ler.readLine());
+        System.out.println("Digite um número de telefone: ");
+        t.setNumero(ler.readLine());
+        System.out.println("Defina o tipo (Celular, Residencial, Comercial): ");
+        t.setTipo(TipoTelefone.valueOf(ler.readLine().toUpperCase()));
+        System.out.println("Principal? (s/n) ");
+        t.setPrincipal(ler.readLine().equals("s"));;
+        return t;
     }
 
 }
