@@ -101,11 +101,9 @@ public class ControllerAgenda extends ControllerDaos {
             int opcao = Integer.parseInt(ler.readLine());
             switch (opcao) {
                 case 1:
-                    //editar nome
                     c.setNome(ler.readLine());
                     break;
                 case 2:
-                    //editar data niver
                     SetData(c);
                     break;
                 case 3:
