@@ -2,6 +2,11 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/src/br/ufms/agenda/App/Main.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/src/br/ufms/agenda/model/daolib/ReadWriteDAO.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/src/br/ufms/agenda/model/dao/DAOFactory.java</file>
+            <file>file:/home/rafael/Documentos/Repositorios/UFMS/Materias/4Semestre/bancodedadosI/Trabalho%20I/Agenda/src/br/ufms/agenda/model/dao/ContatoDAO.java</file>
+        </group>
     </open-files>
 </project-private>
