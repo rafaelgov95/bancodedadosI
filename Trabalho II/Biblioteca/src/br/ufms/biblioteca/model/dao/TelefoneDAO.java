@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import br.ufms.biblioteca.model.bean.Telefone;
-import br.ufms.biblioteca.model.bean.TipoTelefone;
+import br.ufms.biblioteca.model.bean.enumerate.TipoTelefone;
 
 /**
  *
@@ -28,7 +28,7 @@ public class TelefoneDAO extends ReadWriteDAO<Telefone, Integer> {
 
     @Override
     protected void insert(Connection conn, Telefone bean, Serializable... dependencies) throws SQLException {
-        final String sql = "insert into Biblioteca.Telefones (ddd,numero,tipo,principal,contato_codigo) values (?,?,?,?,?)";
+        final String sql = "insert into Biblioteca.telefones (ddd,numero,tipo,is_principal,id_usuario) values (?,?,?,?,?)";
         
         try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
   
@@ -48,7 +48,7 @@ public class TelefoneDAO extends ReadWriteDAO<Telefone, Integer> {
 
     @Override
     protected void update(Connection conn, Telefone bean) throws SQLException {
-        final String sql = "update Agenda.Telefones set ddd = ?,numero = ?,tipo=?,principal = ? where codigo = ?";
+        final String sql = "update Biblioteca.telefones set ddd = ?,numero = ?,tipo=?,principal = ? where id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, bean.getDDD());

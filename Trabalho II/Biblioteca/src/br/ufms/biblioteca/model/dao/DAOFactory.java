@@ -5,21 +5,37 @@
  */
 package br.ufms.biblioteca.model.dao;
 
+import br.ufms.biblioteca.model.bean.Estudante;
+import br.ufms.biblioteca.model.bean.Livro;
+import br.ufms.biblioteca.model.bean.Usuario;
+
 /**
  *
  * @author rafael
  */
 public class DAOFactory {
 
-    private final TelefoneDAO telefoneDAO;
-    private final UsuarioDAO contatoDAO;
+    private final TelefoneDAO telefone;
+    private final EstudanteDAO estudante;
+    private final ProfessorDAO professor;
+    private final MunicipioDAO municipio;
+    private final EnderecoDAO endereco;
+    private final UsuarioDAO<Estudante> usuario;
+    private final LivroDAO livro;
+    private final AutorDAO autor;
 
     private DAOFactory() {
-        this.telefoneDAO = new TelefoneDAO();
-        this.contatoDAO = new UsuarioDAO();
+        this.telefone = new TelefoneDAO();
+        this.estudante = new EstudanteDAO();
+        this.professor = new ProfessorDAO();
+        this.endereco = new EnderecoDAO();
+        this.municipio = new MunicipioDAO();
+        this.usuario = new EstudanteDAO();
+        this.livro = new LivroDAO();
+        this.autor = new AutorDAO();
+
     }
-    
-    
+
     /**
      * Gets the single instance of DAOFactory class.
      *
@@ -30,25 +46,46 @@ public class DAOFactory {
     }
 
     /**
-     * @return the telefoneDAO
-     */
-    public TelefoneDAO getTelefoneDAO() {
-        return telefoneDAO;
-    }
-
-    /**
-     * @return the contatoDAO
-     */
-    public UsuarioDAO getContatoDAO() {
-        return contatoDAO;
-    }
-
-    /**
      * Classe privada que armazena a única instância de DAOFactory.
      */
     private static class DAOFactoryHolder {
 
         private static final DAOFactory INSTANCE = new DAOFactory();
+    }
+
+    /**
+     * @return the telefoneDAO
+     */
+    public TelefoneDAO getTelefoneDAO() {
+        return telefone;
+    }
+
+    public AutorDAO getAutorDAO() {
+        return autor;
+    }
+
+    public LivroDAO getLivro() {
+        return livro;
+    }
+
+    public EstudanteDAO getEstudanteDAO() {
+        return estudante;
+    }
+
+    public ProfessorDAO getProfessorDAO() {
+        return professor;
+    }
+
+    public UsuarioDAO getUsuarioDAO() {
+        return usuario;
+    }
+
+    public MunicipioDAO getMunicipioDAO() {
+        return municipio;
+    }
+
+    public EnderecoDAO getEnderecoDAO() {
+        return endereco;
     }
 
 }

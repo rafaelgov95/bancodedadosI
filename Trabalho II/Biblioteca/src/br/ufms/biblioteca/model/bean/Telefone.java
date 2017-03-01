@@ -5,6 +5,7 @@
  */
 package br.ufms.biblioteca.model.bean;
 
+import br.ufms.biblioteca.model.bean.enumerate.TipoTelefone;
 import br.ufms.biblioteca.model.daolib.Bean;
 
 /**
@@ -69,7 +70,7 @@ public class Telefone extends Bean<Integer> {
      * @param principal the principal to set
      */
     public void setPrincipal(boolean principal) {
-        
+
         this.principal = principal;
     }
 
