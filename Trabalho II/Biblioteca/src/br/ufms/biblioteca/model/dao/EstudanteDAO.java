@@ -9,6 +9,8 @@ import br.ufms.biblioteca.model.bean.Endereco;
 import br.ufms.biblioteca.model.bean.Estudante;
 import br.ufms.biblioteca.model.bean.Telefone;
 import br.ufms.biblioteca.model.bean.Usuario;
+import br.ufms.biblioteca.model.bean.enumerate.TipoCurso;
+import br.ufms.biblioteca.model.bean.enumerate.TipoTitulacao;
 import br.ufms.biblioteca.model.daolib.Bean;
 import br.ufms.biblioteca.model.daolib.ReadWriteDAO;
 
@@ -18,6 +20,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -43,10 +47,31 @@ public class EstudanteDAO extends UsuarioDAO<Estudante> {
 
     }
 
-    
-
     @Override
     protected void updateAbst(Connection conn, Estudante bean) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+//    @Override
+//    protected Estudante resultSetToBean(Connection conn, ResultSet rs) throws SQLException {
+//        Estudante estudante = new Estudante();
+//
+//        setGeneratedKey(estudante, rs.getInt("id"));
+//        
+////        estudante.setNome(DAOFactory.getInstance().getUsuarioDAO().get(conn, Integer.SIZE));
+////        estudante.setRga(rs.getString("rga"));
+////        estudante.setCurso(TipoCurso.setCurso(rs.getString("curso")));
+////        estudante.setRga(rs.getString("rga"));
+////        estudante.setTitulacao(TipoTitulacao.setTitulacao(rs.getString("titulacao")));
+//        return estudante;
+//    }
+//    @Override
+//    protected String sqlToGet() {
+//            return "SELECT * FROM Biblioteca.estudantes where id = ?";
+//
+//    }
+    @Override
+    protected void delete(Connection conn, Integer codigo) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -55,23 +80,4 @@ public class EstudanteDAO extends UsuarioDAO<Estudante> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    protected Estudante get(Connection conn, Integer codigo) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    protected String sqlToGet(Long codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    protected String sqlToGetAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    protected void delete(Connection conn, Integer codigo) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

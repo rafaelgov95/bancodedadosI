@@ -6,7 +6,7 @@
 package br.ufms.biblioteca.model.bean;
 
 import br.ufms.biblioteca.model.daolib.Bean;
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -15,7 +15,41 @@ import java.util.List;
  */
 public class Emprestimo extends Bean<Integer> {
 
-    private List<Livro> livro;
-    private LocalDate data_emprestimo;
+    private Usuario usuario;
+    private Livro livro;
+    private LocalTime data_emprestimo;
+    private boolean ativa;
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Livro getLivro() {
+        return livro;
+    }
+
+    public void setLivro(Livro livro) {
+        this.livro = livro;
+    }
+
+    public LocalTime getData_emprestimo() {
+        return data_emprestimo;
+    }
+
+    public void setData_emprestimo(LocalTime data_emprestimo) {
+        this.data_emprestimo = data_emprestimo;
+    }
+
+    public boolean isAtiva() {
+        return ativa;
+    }
+
+    public void setAtiva(boolean ativa) {
+        this.ativa = ativa;
+    }
+    
 }

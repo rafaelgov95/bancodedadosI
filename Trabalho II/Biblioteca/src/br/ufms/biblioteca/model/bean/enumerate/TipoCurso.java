@@ -35,4 +35,27 @@ public enum TipoCurso {
                 return "";
         }
     }
+
+    public static TipoCurso setCurso(String curso) {
+        switch (curso) {
+            case "SISTEMAS DE INFORMAÇÂO":
+                return SISTEMA_DE_INFORMACAO;
+            case "DIREITO":
+                return DIREITO;
+            case "HISTORIA":
+                return HISTORIA;
+            case "LETRAS":
+                return LETRAS;
+            case "QUIMICA":
+                return QUIMICA;
+            case "MATEMATICA":
+                return MATEMATICA;
+            case "FISICA":
+                return FISICA;
+            case "ANALISE DE SISTEMAS":
+                return ANALISE_DE_SISTEMAS;
+            default:
+                return null;
+        }
+    }
 }

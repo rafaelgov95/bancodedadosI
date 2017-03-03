@@ -7,6 +7,7 @@ package br.ufms.biblioteca.controller;
 
 import br.ufms.biblioteca.model.bean.Autor;
 import br.ufms.biblioteca.model.bean.Editora;
+import br.ufms.biblioteca.model.bean.Emprestimo;
 import br.ufms.biblioteca.model.bean.Endereco;
 import br.ufms.biblioteca.model.bean.Estudante;
 import br.ufms.biblioteca.model.bean.Livro;
@@ -20,16 +21,18 @@ import br.ufms.biblioteca.model.bean.enumerate.TipoIdioma;
 import br.ufms.biblioteca.model.bean.enumerate.TipoNacionalidade;
 import br.ufms.biblioteca.model.bean.enumerate.TipoTelefone;
 import br.ufms.biblioteca.model.bean.enumerate.UF;
-import br.ufms.biblioteca.model.bean.enumerate.Titulacao;
+import br.ufms.biblioteca.model.bean.enumerate.TipoTitulacao;
 import br.ufms.biblioteca.model.dao.DAOFactory;
 import br.ufms.biblioteca.model.dao.EnderecoDAO;
 import br.ufms.biblioteca.model.dao.EstudanteDAO;
+import br.ufms.biblioteca.model.daolib.Bean;
 import com.sun.jndi.ldap.Connection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +63,7 @@ public class ControllerPrincipal {
                     Estudante user = new Estudante();
                     System.out.print("Nome: ");
                     user.setNome("Rafael");
-                    user.setTitulacao(Titulacao.POS_DOUTOR);
+                    user.setTitulacao(TipoTitulacao.POS_DOUTOR);
                     user.setData_nascimento(LocalDate.now());
                     user.setFim_contrato(LocalDate.now());
                     System.out.println("CPF");
@@ -99,24 +102,6 @@ public class ControllerPrincipal {
                     break;
 
                 case "2":
-                    Professor p = new Professor();
-                    p.setNome("Kleber");
-                    p.setData_nascimento(LocalDate.now());
-                    p.setFim_contrato(LocalDate.now());
-                    p.setCpf("31231231");
-                    p.setTitulacao(Titulacao.GRADUANDO);
-                    p.setCurso(TipoCurso.SISTEMA_DE_INFORMACAO);
-                    p.setSiap(31231321);
-                    p.setAdmissao(LocalDate.now());
-                    p.setIs_substituto(false);
-                    DAOFactory.getInstance().getUsuarioDAO().save(p);
-                    p.setCpf("888888888");
-                    p.setNome("LUCAS LUCO"
-                    );
-                    p.setCpf("3123132");
-                    DAOFactory.getInstance().getUsuarioDAO().save(p);
-                    break;
-                case "3":
                     Endereco en = new Endereco();
                     en.setRua("Salvina Maria Do Carmo");
                     en.setBairro("Flavio Garcia");
@@ -126,9 +111,7 @@ public class ControllerPrincipal {
                     en.setSemNumero(false);
 //                    en.setMunicipio(m);
 
-                    Editora editora = new Editora();
-                    editora.setNome("Rafael Producoes");
-                    editora.setEndereco(en);
+                    ;
 
                     Livro livro = new Livro();
                     livro.setNome("Rafael e o Ladrao de Codigo");
@@ -137,16 +120,86 @@ public class ControllerPrincipal {
                     livro.setAno_publicacao(LocalDate.now());
                     livro.setClassificacao(TipoClassificacao.CIENTIFICO);
                     livro.setEdicao(Short.parseShort("5"));
-                    livro.setEditora(editora);
+
                     Autor autor = DAOFactory.getInstance().getAutorDAO().get(1);
                     System.out.println(autor.getNome());
                     List<Autor> autores = new ArrayList<>();
                     autores.add(autor);
                     livro.setAutores(autores);
                     System.out.println(livro.getAutores().get(0).getNome());
-                    
-                    
+
                     DAOFactory.getInstance().getLivro().insert(livro);
+
+                    Professor p = new Professor();
+                    p.setNome("Kleber");
+                    p.setData_nascimento(LocalDate.now());
+                    p.setFim_contrato(LocalDate.now());
+                    p.setCpf("31231231");
+                    p.setTitulacao(TipoTitulacao.GRADUANDO);
+                    p.setCurso(TipoCurso.SISTEMA_DE_INFORMACAO);
+                    p.setSiap(31231321);
+                    p.setAdmissao(LocalDate.now());
+                    p.setIs_substituto(false);
+                    DAOFactory.getInstance().getUsuarioDAO().save(p);
+                    p.setCpf("888888888");
+                    p.setNome("Kleber Kruger"
+                    );
+                    p.setCpf("3123132");
+                    Emprestimo empr = new Emprestimo();
+                    empr.setAtiva(true);
+                    empr.setUsuario(p);
+                    empr.setLivro(livro);
+                    p.getEmprestimos().add(empr);
+                    DAOFactory.getInstance().getUsuarioDAO().save(p);
+
+                    break;
+                case "3":
+//                    Endereco en = new Endereco();
+//                    en.setRua("Salvina Maria Do Carmo");
+//                    en.setBairro("Flavio Garcia");
+//                    en.setComplemento("Ao Lado da Publisom");
+//                    en.setNumero((short) 12);
+//                    en.setCEP("79400-000");
+//                    en.setSemNumero(false);
+////                    en.setMunicipio(m);
+//
+//                    Editora editora = new Editora();
+//                    editora.setNome("Rafael Producoes");
+//                    editora.setEndereco(en);
+//
+//                    Livro livro = new Livro();
+//                    livro.setNome("Rafael e o Ladrao de Codigo");
+//                    livro.setIsbn(23123123);
+//                    livro.setIdioma(TipoIdioma.INGLES);
+//                    livro.setAno_publicacao(LocalDate.now());
+//                    livro.setClassificacao(TipoClassificacao.CIENTIFICO);
+//                    livro.setEdicao(Short.parseShort("5"));
+//                    livro.setEditora(editora);
+//                    
+//                    Autor autor = DAOFactory.getInstance().getAutorDAO().get(1);
+//                    System.out.println(autor.getNome());
+//                    List<Autor> autores = new ArrayList<>();
+//                    autores.add(autor);
+//                    livro.setAutores(autores);
+//                    System.out.println(livro.getAutores().get(0).getNome());
+//                    
+//                    DAOFactory.getInstance().getLivro().insert(livro);
+//                  
+                    break;
+                case "4":
+                    Usuario bean = (Usuario) DAOFactory.getInstance().getUsuarioDAO().get(2);
+
+                    if (bean == null) {
+                        System.out.println("Bean e Nullo");
+                    } else if (bean instanceof Estudante) {
+                        System.out.println("Estudante");
+                    } else if (bean instanceof Professor) {
+                        System.out.println("Professor");
+                        System.out.println(((Professor) bean).getNome());
+                        System.out.println(((Professor) bean).getCodigo());
+                        System.out.println(((Professor) bean).getSiap());
+                        System.out.println(((Professor) bean).getAdmissao());
+                    }
                     break;
                 default:
                     System.out.println("Escolha Opcao Certa");
@@ -158,6 +211,5 @@ public class ControllerPrincipal {
 
     private void MenuCadastroEndereco() throws SQLException {
 
-//        return ;//        DAOFactory.getInstance().getEnderecoDAO().insert(endereco, n);
     }
 }

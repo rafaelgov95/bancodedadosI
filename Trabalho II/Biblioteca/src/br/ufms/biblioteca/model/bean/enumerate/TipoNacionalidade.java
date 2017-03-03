@@ -12,6 +12,22 @@ package br.ufms.biblioteca.model.bean.enumerate;
 public enum TipoNacionalidade {
     BRASILEIRO, INGLES, MEXICANO, ITALIANO;
 
+    public TipoNacionalidade setEnum(String arg) {
+        switch (arg) {
+            case "Brasileiro":
+                return BRASILEIRO;
+            case "Ingles":
+                return INGLES;
+            case "Mexicano":
+                return MEXICANO;
+            case "Italiano":
+                return ITALIANO;
+            default:
+                return null;
+        }
+
+    }
+
     @Override
     public String toString() {
         switch (this) {

@@ -1,7 +1,7 @@
 package br.ufms.biblioteca.model.bean;
 
 import br.ufms.biblioteca.model.bean.enumerate.TipoCurso;
-import br.ufms.biblioteca.model.bean.enumerate.Titulacao;
+import br.ufms.biblioteca.model.bean.enumerate.TipoTitulacao;
 import br.ufms.biblioteca.model.daolib.Bean;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -17,13 +17,13 @@ public abstract class Usuario extends Bean<Integer> implements Serializable {
     private String nome;
     private TipoCurso curso;
     private String cpf;
-    private Titulacao titulacao;
+    private TipoTitulacao titulacao;
     private LocalDate fim_contrato;
     private LocalDate data_nascimento;
     private LocalDate data_at;
     private final List<Telefone> telefones;
     private final List<Endereco> enderecos;
-    private final List<Livro> emprestimos;
+    private final List<Emprestimo> emprestimos;
 
     public List<Endereco> getEnderecos() {
         return enderecos;
@@ -39,8 +39,7 @@ public abstract class Usuario extends Bean<Integer> implements Serializable {
         this.emprestimos = new ArrayList<>();
     }
 
-    
-    public List<Livro> getEmprestimos() {
+    public List<Emprestimo> getEmprestimos() {
         return emprestimos;
     }
 
@@ -65,11 +64,11 @@ public abstract class Usuario extends Bean<Integer> implements Serializable {
         return data_nascimento;
     }
 
-    public Titulacao getTitulacao() {
+    public TipoTitulacao getTitulacao() {
         return titulacao;
     }
 
-    public void setTitulacao(Titulacao titulacao) {
+    public void setTitulacao(TipoTitulacao titulacao) {
         this.titulacao = titulacao;
     }
 
@@ -78,6 +77,10 @@ public abstract class Usuario extends Bean<Integer> implements Serializable {
      */
     public void setData_nascimento(LocalDate data_nascimento) {
         this.data_nascimento = data_nascimento;
+    }
+
+    public void setData_at(LocalDate data_at) {
+        this.data_at = data_at;
     }
 
     public LocalDate getData_at() {
@@ -96,6 +99,7 @@ public abstract class Usuario extends Bean<Integer> implements Serializable {
     }
 
     public void setCurso(TipoCurso curso) {
+
         this.curso = curso;
     }
 

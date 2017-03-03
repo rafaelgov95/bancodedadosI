@@ -5,8 +5,10 @@
  */
 package br.ufms.biblioteca.model.dao;
 
+import br.ufms.biblioteca.model.bean.Emprestimo;
 import br.ufms.biblioteca.model.bean.Endereco;
 import br.ufms.biblioteca.model.bean.Estudante;
+import br.ufms.biblioteca.model.bean.Livro;
 import br.ufms.biblioteca.model.bean.Professor;
 import br.ufms.biblioteca.model.daolib.ReadWriteDAO;
 import java.io.Serializable;
@@ -19,8 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import br.ufms.biblioteca.model.bean.Usuario;
 import br.ufms.biblioteca.model.bean.Telefone;
+import br.ufms.biblioteca.model.bean.enumerate.TipoCurso;
+import br.ufms.biblioteca.model.bean.enumerate.TipoTitulacao;
 import br.ufms.biblioteca.model.daolib.Bean;
-import java.time.LocalDate;
+import java.lang.invoke.SerializedLambda;
 
 /**
  *
@@ -124,6 +128,16 @@ public abstract class UsuarioDAO<B extends Usuario> extends ReadWriteDAO<B, Inte
         }
     }
 
+    protected void saveEmprestimos(Connection conn, B bean, Serializable... dependencies) throws SQLException {
+
+        if (bean.getEmprestimos().size() > 0) {
+            for (Emprestimo emprestimo : bean.getEmprestimos()) {
+                DAOFactory.getInstance().getEmprestimoDAO().save(conn, emprestimo);
+
+            }
+        }
+    }
+
     protected void updateEstudante(Connection conn, B bean) throws SQLException {
         DAOFactory.getInstance().getEstudanteDAO().updateAbst(conn, (Estudante) bean);
 
@@ -161,6 +175,7 @@ public abstract class UsuarioDAO<B extends Usuario> extends ReadWriteDAO<B, Inte
             insertUsuario(conn, bean);
             saveEndereco(conn, bean);
             saveTelefones(conn, bean);
+            saveEmprestimos(conn, bean);
             if (bean instanceof Estudante) {
                 saveEstudante(conn, bean);
             } else if (bean instanceof Professor) {
@@ -176,12 +191,6 @@ public abstract class UsuarioDAO<B extends Usuario> extends ReadWriteDAO<B, Inte
         }
     }
 
-    /**
-     *
-     * @param conn
-     * @param bean
-     * @throws SQLException
-     */
     @Override
     protected void update(Connection conn, B bean) throws SQLException {
         conn.setAutoCommit(false);
@@ -189,13 +198,12 @@ public abstract class UsuarioDAO<B extends Usuario> extends ReadWriteDAO<B, Inte
             updateUsuario(conn, bean);
             saveEndereco(conn, bean);
             saveTelefones(conn, bean);
+            saveEmprestimos(conn, bean, bean.getCodigo());
             if (bean instanceof Estudante) {
                 updateEstudante(conn, bean);
             } else if (bean instanceof Professor) {
                 updateProfessor(conn, bean);
             }
-
-//            updateAbst(conn, bean);
             conn.commit();
         } catch (SQLException ex) {
             conn.rollback();
@@ -205,7 +213,6 @@ public abstract class UsuarioDAO<B extends Usuario> extends ReadWriteDAO<B, Inte
         }
     }
 
-//    @Override
     protected void delete(Connection conn, Long codigo) throws SQLException {
         final String sql = "DELETE FROM desafio.usuario WHERE codigo = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -214,45 +221,69 @@ public abstract class UsuarioDAO<B extends Usuario> extends ReadWriteDAO<B, Inte
         }
     }
 
-//    @Override
-    protected B get(Connection conn, Long codigo) throws SQLException {
+    @Override
+    protected B get(Connection conn, Integer codigo) throws SQLException {
         B bean = null;
-        try (PreparedStatement ps = conn.prepareStatement(sqlToGet(codigo))) {
+        String sql = "select d.id ,d.nome,d.curso,d.cpf,d.titulacao,d.data_fim_contrato,d.data_nascimento,d.data_at,p.rga,m.siap,m.is_substituto,m.admissao from usuarios d left join estudantes p on (p.id = d.id) left join professores m on (m.id = d.id) where d.id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, codigo);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.first()) {
-                    bean = resultSetToBean(conn, rs);
+                    if (rs.getString("rga") != null) {
+                        Estudante e = new Estudante();
+                        populateBean((B) e, conn, rs);
+                        e.setRga(rs.getString("rga"));
+                        return (B) e;
+                    } else {
+                        Professor p = new Professor();
+                        populateBean((B) p, conn, rs);
+                        p.setAdmissao(rs.getDate("admissao").toLocalDate());
+                        p.setSiap(rs.getInt("siap"));
+                        p.setIs_substituto(rs.getBoolean("is_substituto"));
+                        return (B) p;
+                    }
                 }
             }
         }
-        return bean;
+        return null;
     }
 
     @Override
     protected List<B> getAll(Connection conn) throws SQLException {
         List<B> beans = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement(sqlToGetAll())) {
+        String sql = "select d.id ,d.nome,d.curso,d.cpf,d.titulacao,d.data_fim_contrato,d.data_nascimento,d.data_at,p.rga,m.siap,m.is_substituto,m.admissao from usuarios d left join estudantes p on (p.id = d.id)left join professores m on (m.id = d.id)";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    beans.add(resultSetToBean(conn, rs));
+                    if (rs.getString("rga") != null) {
+                        Estudante e = new Estudante();
+                        populateBean((B) e, conn, rs);
+                        e.setRga(rs.getString("rga"));
+                        beans.add((B) e);
+                    } else {
+                        Professor p = new Professor();
+                        populateBean((B) p, conn, rs);
+                        p.setAdmissao(rs.getDate("admissao").toLocalDate());
+                        p.setSiap(rs.getInt("siap"));
+                        p.setIs_substituto(rs.getBoolean("is_substituto"));
+                        beans.add((B) p);
+                    }
+
                 }
             }
         }
         return beans;
     }
 
-    protected B populateBean(B bean, Connection conn, ResultSet rs) throws SQLException {
-//        final Endereco endereco = getDAOFactory().getEnderecoDAO().findByUsuario(conn, rs.getLong("codigo"));
-//        final List<Telefone> telefones = getDAOFactory().getTelefoneDAO().findByUsuario(conn, rs.getLong("codigo"));
-//        final Date criacao = rs.getDate("data_criacao");
-//        bean.setCodigo(rs.getLong("codigo"));
-//        bean.setNome(rs.getString("nome"));
-//        bean.setUsuario(rs.getString("usuario"));
-//        bean.setSenha(rs.getString("senha"));
-//        bean.setEmail(rs.getString("email"));
-//        bean.setTelefones(telefones != null ? telefones : new ArrayList<>());
-//        bean.setEndereco(endereco != null ? endereco : new Endereco());
-//        bean.setCriacao(criacao != null ? criacao.toLocalDate() : null);
-        return bean;
+    protected void populateBean(B bean, Connection conn, ResultSet rs) throws SQLException {
+        setGeneratedKey(bean, rs.getInt("id"));
+        bean.setNome(rs.getString("nome"));
+        bean.setCurso(TipoCurso.setCurso(rs.getString("curso")));
+        bean.setTitulacao(TipoTitulacao.setTitulacao(rs.getString("titulacao")));
+        bean.setData_nascimento(rs.getDate("data_nascimento").toLocalDate());
+        bean.setFim_contrato(rs.getDate("data_fim_contrato").toLocalDate());
+        bean.setData_at(rs.getDate("data_at").toLocalDate());
+
     }
 
     protected abstract void insertAbst(Connection conn, B bean) throws SQLException;
@@ -261,24 +292,4 @@ public abstract class UsuarioDAO<B extends Usuario> extends ReadWriteDAO<B, Inte
 
     protected abstract B resultSetToBean(Connection conn, ResultSet rs) throws SQLException;
 
-    protected abstract String sqlToGet(Long codigo);
-
-    protected abstract String sqlToGetAll();
-
-//    /**
-//     * -------------------------------------------------------------------------------------------
-//     * Este método usa reflections para instanciar um objeto (derivado de Usuario) B. Como
-//     * reflections gera um custo adicional no desempenho, vou deixar este método comentado e usar
-//     * outra abordagem.
-//     * -------------------------------------------------------------------------------------------
-//     */
-//    protected B resultSetToBean(Connection conn, ResultSet rs) throws SQLException {
-//        B jogador = null;
-//        try {
-//            return populateBean(getBeanClass().newInstance(), conn, rs);
-//        } catch (InstantiationException | IllegalAccessException ex) {
-//            Logger.getLogger(JogadorDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return jogador;
-//    }
 }

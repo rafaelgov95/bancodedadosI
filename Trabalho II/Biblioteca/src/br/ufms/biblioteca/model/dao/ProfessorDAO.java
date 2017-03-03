@@ -7,7 +7,7 @@ package br.ufms.biblioteca.model.dao;
 
 import br.ufms.biblioteca.model.bean.Estudante;
 import br.ufms.biblioteca.model.bean.Professor;
-import br.ufms.biblioteca.model.bean.enumerate.Titulacao;
+import br.ufms.biblioteca.model.bean.enumerate.TipoTitulacao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -27,15 +27,6 @@ public class ProfessorDAO extends UsuarioDAO<Professor> {
         super(Professor.class);
     }
 
-    @Override
-    protected String sqlToGet(Long codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    protected String sqlToGetAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     protected void delete(Connection conn, Integer codigo) throws SQLException {
@@ -73,11 +64,15 @@ public class ProfessorDAO extends UsuarioDAO<Professor> {
 
     @Override
     protected Professor resultSetToBean(Connection conn, ResultSet rs) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Professor p = new Professor();
+        populateBean(p, conn, rs);
+        setGeneratedKey(p, rs.getInt("id"));
+        System.out.println("chego aqui");
+        return p;
     }
 
-    @Override
-    protected Professor get(Connection conn, Integer codigo) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
+
+   
+   
 }
