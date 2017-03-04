@@ -71,7 +71,7 @@ public class AutorDAO extends ReadWriteDAO<Autor, Integer> {
             ps.setInt(1, codigo);
             ps.execute();
         }
-        conn.commit();
+   
     }
 
     @Override

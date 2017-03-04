@@ -30,10 +30,6 @@ public class EmprestimoDAO extends ReadWriteDAO<Emprestimo, Integer> {
         super(Emprestimo.class);
     }
 
-    protected void SaveLivro(Connection conn, Emprestimo bean, Serializable... dependencies) throws SQLException {
-
-    }
-
     @Override
     protected void insert(Connection conn, Emprestimo bean, Serializable... dependencies) throws SQLException {
         final String sql = "INSERT INTO Biblioteca.emprestimos (is_ativo,id_usuario,id_livro) VALUES ( ?, ?, ?)";

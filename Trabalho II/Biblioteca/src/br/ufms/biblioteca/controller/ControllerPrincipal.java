@@ -58,7 +58,8 @@ public class ControllerPrincipal {
                     + " 3 - Cadastar Livro\n"
                     + " 4 - Cadastrar Municipio\n"
                     + " 5 - Livros Menu \n"
-                    + " 6 - Autores Menu");
+                    + " 6 - Autores Menu\n"
+                    + " 7 - Emprestimos");
 
             String opcao = leia.readLine();
             switch (opcao) {
@@ -210,7 +211,7 @@ public class ControllerPrincipal {
                             + "2 - Update\n"
                             + "3 - Delete\n"
                             + "4 - Get\n"
-                            + "5 - GetALL");
+                            + "5 - GetALL\n");
                     String opcaoLivros = leia.readLine();
 
                     Livro l = new Livro();
@@ -228,8 +229,14 @@ public class ControllerPrincipal {
                             l.setEdicao(Short.parseShort(leia.readLine()));
                             System.out.println("Editora");
                             l.setEditora(DAOFactory.getInstance().getEditoraDAO().get(1));
+                            System.out.println(l.getEditora().getNome());
                             System.out.println("Todos Altores Ate o Momento Fez esse livro e estao sendo adicionados");
-                            l.setAutores(DAOFactory.getInstance().getAutorDAO().getAll());
+//                            for (Autor autore : DAOFactory.getInstance().getAutorDAO().getAll()) {
+//                                if (autore != null) {
+//                                    l.getAutores().add(autore);
+//                                }
+//                            }
+                            l.getAutores().addAll(DAOFactory.getInstance().getAutorDAO().getAll());
                             System.out.println("Informe a data de publicacao do livro");
 
                             String data = leia.readLine();
@@ -251,7 +258,7 @@ public class ControllerPrincipal {
 //                            a.setNacionalidade(TipoNacionalidade.valueOf(leia.readLine()));
                             break;
                         case "3":
-//                            DAOFactory.getInstance().getAutorDAO().delete(1);
+                            DAOFactory.getInstance().getLivro().delete(3);
                             break;
                         case "4":
 //                            a = DAOFactory.getInstance().getAutorDAO().get(1);
@@ -271,7 +278,6 @@ public class ControllerPrincipal {
                             + "4 - Get\n"
                             + "5 - GetALL");
                     String opcaoAutores = leia.readLine();
-
                     Autor a = new Autor();
                     switch (opcaoAutores) {
                         case "1":
@@ -290,12 +296,55 @@ public class ControllerPrincipal {
                             a.setNacionalidade(TipoNacionalidade.valueOf(leia.readLine()));
                             break;
                         case "3":
-                            DAOFactory.getInstance().getAutorDAO().delete(1);
+                            DAOFactory.getInstance().getAutorDAO().delete(Integer.parseInt(leia.readLine()));
                             break;
                         case "4":
                             a = DAOFactory.getInstance().getAutorDAO().get(1);
                             System.out.println(a.getNome());
                             System.out.println(a.getNacionalidade().toString());
+                            break;
+                        case "5":
+                            break;
+
+                    }
+                    break;
+                case "7":
+                    System.out.println("MENU EMPRESTIMOS");
+                    System.out.println("1 - Insert\n"
+                            + "2 - Update\n"
+                            + "3 - Delete\n"
+                            + "4 - Get\n"
+                            + "5 - GetALL");
+                    String opcaoEmprestimo = leia.readLine();
+
+                    Emprestimo emprestimo = new Emprestimo();
+                    switch (opcaoEmprestimo) {
+                        case "1":
+                            System.out.print("Id Livro: ");
+                            emprestimo.setLivro((Livro) DAOFactory.getInstance().getLivro().get(Integer.parseInt(leia.readLine())));
+                            System.out.print("Usuario que esta emprestando");
+                            emprestimo.setUsuario((Usuario) DAOFactory.getInstance().getUsuarioDAO().get(Integer.parseInt(leia.readLine())));
+                            System.out.print("Ativa ou Desativa");
+                            emprestimo.setAtiva(Boolean.parseBoolean(leia.readLine()));
+                            DAOFactory.getInstance().getEmprestimoDAO().save(emprestimo);
+                            break;
+                        case "2":
+                            emprestimo = DAOFactory.getInstance().getEmprestimoDAO().get(Integer.parInt(leia.readLine()));
+                            System.out.print("Id Livro: ");
+                            emprestimo.setLivro((Livro) DAOFactory.getInstance().getLivro().get(Integer.parseInt(leia.readLine())));
+                            System.out.print("Usuario que esta emprestando");
+                            emprestimo.setUsuario((Usuario) DAOFactory.getInstance().getUsuarioDAO().get(Integer.parseInt(leia.readLine())));
+                            System.out.print("Ativa ou Desativa");
+                            emprestimo.setAtiva(Boolean.parseBoolean(leia.readLine()));
+                            DAOFactory.getInstance().getEmprestimoDAO().save(emprestimo);
+                            break;
+                        case "3":
+                            DAOFactory.getInstance().getAutorDAO().delete(Integer.parseInt(leia.readLine()));
+                            break;
+                        case "4":
+//                            emprestimo = DAOFactory.getInstance().getAutorDAO().get(1);
+//                            System.out.println(emprestimo.getNome());
+//                            System.out.println(emprestimo.getNacionalidade().toString());
                             break;
                         case "5":
                             break;

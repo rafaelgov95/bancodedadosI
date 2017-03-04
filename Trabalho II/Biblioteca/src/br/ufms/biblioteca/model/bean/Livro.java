@@ -9,6 +9,7 @@ import br.ufms.biblioteca.model.bean.enumerate.TipoClassificacao;
 import br.ufms.biblioteca.model.bean.enumerate.TipoIdioma;
 import br.ufms.biblioteca.model.daolib.Bean;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +26,10 @@ public class Livro extends Bean<Integer> {
     private LocalDate ano_publicacao;
     private Editora editora;
     private List<Autor> autores;
+
+    public Livro() {
+        this.autores = new ArrayList<>();
+    }
 
     public String getNome() {
         return nome;
@@ -87,6 +92,7 @@ public class Livro extends Bean<Integer> {
     }
 
     public void setAutores(List<Autor> autores) {
+        
         this.autores = autores;
     }
 

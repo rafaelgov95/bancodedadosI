@@ -6,12 +6,15 @@
 package br.ufms.biblioteca.model.dao;
 
 import br.ufms.biblioteca.model.bean.Autor;
+import br.ufms.biblioteca.model.bean.Editora;
 import br.ufms.biblioteca.model.bean.Emprestimo;
 import br.ufms.biblioteca.model.bean.Endereco;
 import br.ufms.biblioteca.model.bean.Estudante;
 import br.ufms.biblioteca.model.bean.Livro;
 import br.ufms.biblioteca.model.bean.Professor;
 import br.ufms.biblioteca.model.bean.Telefone;
+import br.ufms.biblioteca.model.bean.enumerate.TipoClassificacao;
+import br.ufms.biblioteca.model.bean.enumerate.TipoIdioma;
 import br.ufms.biblioteca.model.daolib.ReadWriteDAO;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -19,6 +22,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -59,19 +63,6 @@ public class LivroDAO extends ReadWriteDAO<Livro, Integer> {
         }
     }
 
-    protected void AddLivro(Connection conn, Emprestimo bean, Serializable... dependencies) throws SQLException {
-        final String sql = "INSERT INTO Biblioteca.emprestimos (id_usuario,id_livro,data_empretimo,is_ativo) VALUES (?, ?,?,?)";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, bean.getCodigo());
-            ps.setInt(2, (int) dependencies[0]);
-            ps.setInt(3, (int) dependencies[1]);
-//            ps.setData(4,bean)
-            ps.executeUpdate();
-        }
-
-    }
-
     protected void addHasAutor(Connection conn, Autor bean, Serializable... dependencies) throws SQLException {
         final String sql = "INSERT INTO Biblioteca.livros_has_autores(id_livro,id_autor,id_livro_editora) VALUES (?,?, ?)";
 
@@ -92,17 +83,61 @@ public class LivroDAO extends ReadWriteDAO<Livro, Integer> {
 
     @Override
     protected void delete(Connection conn, Integer codigo) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String sql = "DELETE FROM Biblioteca.livros WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, codigo);
+            ps.execute();
+        }
     }
 
     @Override
     protected Livro get(Connection conn, Integer codigo) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String sql = "SELECT * FROM Biblioteca.livros WHERE id = ?";
+        Livro livro = new Livro();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, codigo);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.first()) {
+                    setGeneratedKey(livro, rs.getInt("id"));
+                    livro.setNome(rs.getString("nome"));
+                    livro.setIsbn(rs.getInt("isbn"));
+                    livro.setEdicao(rs.getShort("edicao"));
+                    System.out.println(rs.getString("idioma"));
+                    System.out.println(TipoIdioma.setIdioma(rs.getString("idioma")));
+                    livro.setIdioma(TipoIdioma.setIdioma(rs.getString("idioma")));
+                    livro.setClassificacao(TipoClassificacao.valueOf(rs.getString("classificacao")));
+                    livro.setAno_publicacao(rs.getDate("ano_publi").toLocalDate());
+                    livro.setEditora((Editora) DAOFactory.getInstance().getEditoraDAO().get(rs.getInt("id_editora")));
+                }
+            }
+        }
+        return livro;
     }
 
     @Override
     protected List<Livro> getAll(Connection conn) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String sql = "SELECT * FROM Biblioteca.editoras ";
+        List<Livro> livros = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.execute();
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Livro livro = new Livro();
+                    setGeneratedKey(livro, rs.getInt("id"));
+                    livro.setNome(rs.getString("nome"));
+                    livro.setIsbn(rs.getInt("isbn"));
+                    livro.setEdicao(rs.getShort("edicao"));
+                    livro.setIdioma(TipoIdioma.valueOf(rs.getString("idioma")));
+                    livro.setClassificacao(TipoClassificacao.valueOf(rs.getString("classificacao")));
+                    livro.setAno_publicacao(rs.getDate("ano_publi").toLocalDate());
+                    livro.setEditora((Editora) DAOFactory.getInstance().getEditoraDAO().get(rs.getInt("id_editora")));
+                    livros.add(livro);
+                }
+
+            }
+        }
+
+        return livros;
     }
 
 }

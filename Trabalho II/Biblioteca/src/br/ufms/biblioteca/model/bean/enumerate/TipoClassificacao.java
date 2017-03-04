@@ -20,7 +20,7 @@ public enum TipoClassificacao {
             case CIENTIFICO:
                 return "Cientifico";
             case COLECAO:
-                return "Colecao";
+                return "COLECAO";
             case MATEMATICA:
                 return "Matematica";
             case HISTORIA:

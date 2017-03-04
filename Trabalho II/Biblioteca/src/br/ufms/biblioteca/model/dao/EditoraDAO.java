@@ -66,8 +66,7 @@ public class EditoraDAO extends ReadWriteDAO<Editora, Integer> {
 
     @Override
     protected void delete(Connection conn, Integer codigo) throws SQLException {
-        final String sql = "DELETE FROM Biblioteca.autores WHERE id = ?";
-        Autor autor = new Autor();
+        final String sql = "DELETE FROM Biblioteca.editoras WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, codigo);
             ps.execute();
