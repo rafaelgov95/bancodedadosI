@@ -14,8 +14,7 @@ import br.ufms.biblioteca.model.daolib.Bean;
 public class Editora extends Bean<Integer> {
 
     private String nome;
-    private Endereco endereco;
-
+    private String cidade;
     public String getNome() {
         return nome;
     }
@@ -24,12 +23,14 @@ public class Editora extends Bean<Integer> {
         this.nome = nome;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
+    public String getCidade() {
+        return cidade;
     }
 
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
+
+    
 
 }

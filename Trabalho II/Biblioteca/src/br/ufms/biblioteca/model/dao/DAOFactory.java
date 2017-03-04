@@ -24,6 +24,7 @@ public class DAOFactory {
     private final LivroDAO livro;
     private final AutorDAO autor;
     private final EmprestimoDAO emprestimo;
+    private final EditoraDAO editora;
 
     private DAOFactory() {
         this.telefone = new TelefoneDAO();
@@ -35,6 +36,7 @@ public class DAOFactory {
         this.livro = new LivroDAO();
         this.autor = new AutorDAO();
         this.emprestimo = new EmprestimoDAO();
+        this.editora = new EditoraDAO();
 
     }
 
@@ -62,6 +64,9 @@ public class DAOFactory {
         return telefone;
     }
 
+    public EditoraDAO getEditoraDAO() {
+        return editora;
+    }
     public EmprestimoDAO getEmprestimoDAO() {
         return emprestimo;
     }

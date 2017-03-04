@@ -6,6 +6,7 @@
 package br.ufms.biblioteca.model.dao;
 
 import br.ufms.biblioteca.model.bean.Autor;
+import br.ufms.biblioteca.model.bean.Editora;
 import br.ufms.biblioteca.model.bean.Livro;
 import br.ufms.biblioteca.model.bean.Municipio;
 import br.ufms.biblioteca.model.bean.Telefone;
@@ -24,20 +25,20 @@ import java.util.List;
  *
  * @author rafael
  */
-public class AutorDAO extends ReadWriteDAO<Autor, Integer> {
+public class EditoraDAO extends ReadWriteDAO<Editora, Integer> {
 
-    public AutorDAO() {
-        super(Autor.class);
+    public EditoraDAO() {
+        super(Editora.class);
     }
 
     @Override
-    protected void insert(Connection conn, Autor bean, Serializable... dependencies) throws SQLException {
-        final String sql = "INSERT INTO Biblioteca.autores (nome, nacionalidade) VALUES (?, ?)";
+    protected void insert(Connection conn, Editora bean, Serializable... dependencies) throws SQLException {
+        final String sql = "INSERT INTO Biblioteca.editoras (nome, cidade) VALUES (?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, bean.getNome());
-            ps.setString(2, bean.getNacionalidade().toString());
+            ps.setString(2, bean.getCidade());
             ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.first()) {
@@ -49,13 +50,13 @@ public class AutorDAO extends ReadWriteDAO<Autor, Integer> {
     }
 
     @Override
-    protected void update(Connection conn, Autor bean) throws SQLException {
-        final String sql = "UPDATE Biblioteca.autores SET nome = ?, nacionalidade = ? WHERE id = ?";
+    protected void update(Connection conn, Editora bean) throws SQLException {
+        final String sql = "UPDATE Biblioteca.editoras SET nome = ?, cidade = ? WHERE id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, bean.getNome());
-            ps.setString(2, bean.getNacionalidade().toString());
+            ps.setString(2, bean.getCidade());
             ps.setInt(3, bean.getCodigo());
 
             ps.executeUpdate();
@@ -75,54 +76,54 @@ public class AutorDAO extends ReadWriteDAO<Autor, Integer> {
     }
 
     @Override
-    protected Autor get(Connection conn, Integer codigo) throws SQLException {
-        final String sql = "SELECT * FROM Biblioteca.autores WHERE id = ?";
-        Autor autor = new Autor();
+    protected Editora get(Connection conn, Integer codigo) throws SQLException {
+        final String sql = "SELECT * FROM Biblioteca.editoras WHERE id = ?";
+        Editora editora = new Editora();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, codigo);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.first()) {
-                    setGeneratedKey(autor, rs.getInt("id"));
-                    autor.setNome(rs.getString("nome"));
-                    autor.setNacionalidade(TipoNacionalidade.BRASILEIRO);
+                    setGeneratedKey(editora, rs.getInt("id"));
+                    editora.setNome(rs.getString("nome"));
+                    editora.setCidade(rs.getString("cidade"));
                 }
             }
         }
-        return autor;
+        return editora;
     }
-      protected Autor getFindName(Connection conn, String codigo) throws SQLException {
+      protected Editora getFindName(Connection conn, String codigo) throws SQLException {
         final String sql = "SELECT * FROM Biblioteca.autores WHERE name = ?";
-        Autor autor = new Autor();
+        Editora editora = new Editora();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, codigo);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.first()) {
-                    setGeneratedKey(autor, rs.getInt("id"));
-                    autor.setNome(rs.getString("nome"));
-                    autor.setNacionalidade(TipoNacionalidade.BRASILEIRO);
+                    setGeneratedKey(editora, rs.getInt("id"));
+                    editora.setNome(rs.getString("nome"));
+                    editora.setCidade(rs.getString("cidade"));
                 }
             }
         }
-        return autor;
+        return editora;
     }
 
     @Override
-    protected List<Autor> getAll(Connection conn) throws SQLException {
-        final String sql = "SELECT * FROM Biblioteca.autores ";
-        List<Autor> autores = new ArrayList<>();
+    protected List<Editora> getAll(Connection conn) throws SQLException {
+        final String sql = "SELECT * FROM Biblioteca.editoras ";
+        List<Editora> editoras = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.execute();
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    Autor autor = new Autor();
-                    setGeneratedKey(autor, rs.getInt("id"));
-                    autor.setNome(rs.getString("nome"));
-                    autor.setNacionalidade(TipoNacionalidade.BRASILEIRO);
-                    autores.add(autor);
+                    Editora editora = new Editora();
+                    setGeneratedKey(editora, rs.getInt("id"));
+                    editora.setNome(rs.getString("nome"));
+                    editora.setCidade(rs.getString("cidade"));
+                    editoras.add(editora);
                 }
             }
         }
-        return autores;
+        return editoras;
     }
 
 }

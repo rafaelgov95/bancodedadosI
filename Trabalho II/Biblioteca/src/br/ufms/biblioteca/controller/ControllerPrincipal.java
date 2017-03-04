@@ -33,7 +33,9 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,7 +57,8 @@ public class ControllerPrincipal {
                     + " 2 - Cadastrar Professor\n"
                     + " 3 - Cadastar Livro\n"
                     + " 4 - Cadastrar Municipio\n"
-                    + " 5 - Cadastrar Telefone\n");
+                    + " 5 - Livros Menu \n"
+                    + " 6 - Autores Menu");
 
             String opcao = leia.readLine();
             switch (opcao) {
@@ -201,6 +204,104 @@ public class ControllerPrincipal {
                         System.out.println(((Professor) bean).getAdmissao());
                     }
                     break;
+                case "5":
+                    System.out.println("MENU LIVROS");
+                    System.out.println("1 - Insert\n"
+                            + "2 - Update\n"
+                            + "3 - Delete\n"
+                            + "4 - Get\n"
+                            + "5 - GetALL");
+                    String opcaoLivros = leia.readLine();
+
+                    Livro l = new Livro();
+                    switch (opcaoLivros) {
+                        case "1":
+                            System.out.print("Nome: ");
+                            l.setNome(leia.readLine());
+                            System.out.print("Idioma: ");
+                            l.setIdioma(TipoIdioma.valueOf(leia.readLine()));
+                            System.out.print("ISNB: ");
+                            l.setIsbn(Integer.parseInt(leia.readLine()));
+                            System.out.print("Classificacao: ");
+                            l.setClassificacao(TipoClassificacao.valueOf(leia.readLine()));
+                            System.out.print("Edicao: ");
+                            l.setEdicao(Short.parseShort(leia.readLine()));
+                            System.out.println("Editora");
+                            l.setEditora(DAOFactory.getInstance().getEditoraDAO().get(1));
+                            System.out.println("Todos Altores Ate o Momento Fez esse livro e estao sendo adicionados");
+                            l.setAutores(DAOFactory.getInstance().getAutorDAO().getAll());
+                            System.out.println("Informe a data de publicacao do livro");
+
+                            String data = leia.readLine();
+                            DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                            if (!data.equals("")) {
+                                LocalDate dt = LocalDate.parse(data, f);
+                                l.setAno_publicacao(dt);
+                            } else {
+                                l.setAno_publicacao(null);
+                            }
+
+                            DAOFactory.getInstance().getLivro().save(l);
+                            break;
+                        case "2":
+//                            a = DAOFactory.getInstance().getAutorDAO().get(1);
+//                            System.out.print("Novo Nome");
+//                            a.setNome(leia.readLine());
+//                            System.out.print("Nova Nascionalidade");
+//                            a.setNacionalidade(TipoNacionalidade.valueOf(leia.readLine()));
+                            break;
+                        case "3":
+//                            DAOFactory.getInstance().getAutorDAO().delete(1);
+                            break;
+                        case "4":
+//                            a = DAOFactory.getInstance().getAutorDAO().get(1);
+//                            System.out.println(a.getNome());
+//                            System.out.println(a.getNacionalidade().toString());
+                            break;
+                        case "5":
+                            break;
+
+                    }
+                    break;
+                case "6":
+                    System.out.println("MENU AUTORES");
+                    System.out.println("1 - Insert\n"
+                            + "2 - Update\n"
+                            + "3 - Delete\n"
+                            + "4 - Get\n"
+                            + "5 - GetALL");
+                    String opcaoAutores = leia.readLine();
+
+                    Autor a = new Autor();
+                    switch (opcaoAutores) {
+                        case "1":
+
+                            System.out.print("Nome: ");
+                            a.setNome(leia.readLine());
+                            System.out.print("Nacionalidade: ");
+                            a.setNacionalidade(TipoNacionalidade.valueOf(leia.readLine()));
+                            DAOFactory.getInstance().getAutorDAO().save(a);
+                            break;
+                        case "2":
+                            a = DAOFactory.getInstance().getAutorDAO().get(1);
+                            System.out.print("Novo Nome");
+                            a.setNome(leia.readLine());
+                            System.out.print("Nova Nascionalidade");
+                            a.setNacionalidade(TipoNacionalidade.valueOf(leia.readLine()));
+                            break;
+                        case "3":
+                            DAOFactory.getInstance().getAutorDAO().delete(1);
+                            break;
+                        case "4":
+                            a = DAOFactory.getInstance().getAutorDAO().get(1);
+                            System.out.println(a.getNome());
+                            System.out.println(a.getNacionalidade().toString());
+                            break;
+                        case "5":
+                            break;
+
+                    }
+
                 default:
                     System.out.println("Escolha Opcao Certa");
                     break;
