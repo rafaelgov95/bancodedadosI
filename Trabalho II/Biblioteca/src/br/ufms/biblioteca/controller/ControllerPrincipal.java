@@ -53,7 +53,7 @@ public class ControllerPrincipal {
     public void MenuPrincipal() throws IOException, SQLException {
         while (true) {
             System.out.println("Bem Vindo a Biblioteca UFMS-CPCX\n"
-                    + " 1 - Menu Usuario\n"
+                    + " 1 - Menu TipoUsuario\n"
                     + " 2 - Menu Telefone\n"
                     + " 3 - Menu Endereco\n"
                     + " 4 - Menu Editora \n"
@@ -64,184 +64,22 @@ public class ControllerPrincipal {
             String opcao = leia.readLine();
             switch (opcao) {
                 case "1":
-                    Estudante user = new Estudante();
-                    System.out.print("Nome: ");
-                    user.setNome("Rafael");
-                    user.setTitulacao(TipoTitulacao.POS_DOUTOR);
-                    user.setInicio_contrato(LocalDate.now());
-                    user.setData_nascimento(LocalDate.now());
-                    user.setFim_contrato(LocalDate.now());
-                    System.out.println("CPF");
-                    user.setCpf("31231321");
-                    user.setCurso(TipoCurso.SISTEMA_DE_INFORMACAO);
-                    System.out.println("RGA");
-                    user.setRga("3122342");
-
-                    Municipio m = new Municipio();
-                    m.setIbge(1);
-                    m.setNome("Coxim");
-                    m.setUf(UF.MS);
-
-                    Endereco endereco = new Endereco();
-                    endereco.setRua("Salvina Maria Do Carmo");
-                    endereco.setBairro("Flavio Garcia");
-                    endereco.setComplemento("Ao Lado da Publisom");
-                    endereco.setNumero((short) 12);
-                    endereco.setCEP("79400-000");
-                    endereco.setSemNumero(false);
-                    endereco.setMunicipio(m);
-
-                    user.getEnderecos().add(endereco);
-                    Telefone t = new Telefone();
-                    t.setDDD("24");
-                    t.setNumero("12312311");
-                    t.setPrincipal(true);
-                    t.setTipo(TipoTelefone.CELULAR);
-
-                    user.getTelefones().add(t);
-                    System.out.println(user.getEnderecos().get(0).getMunicipio().getCodigo());
-                    DAOFactory.getInstance().getUsuarioDAO().save(user);
-//                    user.getTelefones().get(1).setDDD("66");
-//                    user.setNome("Rafael Do Verde Bom");
-//                    DAOFactory.getInstance().getUsuarioDAO().save(user);
+                    MenuEscolhaTipoUsuario();
                     break;
-
                 case "2":
-                    Endereco en = new Endereco();
-                    en.setRua("Salvina Maria Do Carmo");
-                    en.setBairro("Flavio Garcia");
-                    en.setComplemento("Ao Lado da Publisom");
-                    en.setNumero((short) 12);
-                    en.setCEP("79400-000");
-                    en.setSemNumero(false);
-//                    en.setMunicipio(m);
-
-                    ;
-
-                    Livro livro = new Livro();
-                    livro.setNome("Rafael e o Ladrao de Codigo");
-                    livro.setIsbn(23123123);
-                    livro.setIdioma(TipoIdioma.INGLES);
-                    livro.setAno_publicacao(LocalDate.now());
-                    livro.setClassificacao(TipoClassificacao.CIENTIFICO);
-                    livro.setEdicao(Short.parseShort("5"));
-
-                    Autor autor = DAOFactory.getInstance().getAutorDAO().get(1);
-                    System.out.println(autor.getNome());
-                    List<Autor> autores = new ArrayList<>();
-                    autores.add(autor);
-                    livro.setAutores(autores);
-                    System.out.println(livro.getAutores().get(0).getNome());
-
-                    DAOFactory.getInstance().getLivro().insert(livro);
-
-                    Professor p = new Professor();
-                    p.setNome("Kleber");
-                    p.setData_nascimento(LocalDate.now());
-                    p.setFim_contrato(LocalDate.now());
-                    p.setCpf("31231231");
-                    p.setTitulacao(TipoTitulacao.GRADUANDO);
-                    p.setCurso(TipoCurso.SISTEMA_DE_INFORMACAO);
-                    p.setSiap(31231321);
-                    p.setInicio_contrato(LocalDate.now());
-                    p.setIs_substituto(false);
-                    DAOFactory.getInstance().getUsuarioDAO().save(p);
-                    p.setCpf("888888888");
-                    p.setNome("Kleber Kruger"
-                    );
-                    p.setCpf("3123132");
-                    Emprestimo empr = new Emprestimo();
-                    empr.setAtiva(true);
-                    empr.setUsuario(p);
-                    empr.setLivro(livro);
-                    p.getEmprestimos().add(empr);
-                    DAOFactory.getInstance().getUsuarioDAO().save(p);
-
+                    MenuTelefone();
                     break;
                 case "3":
-//                    Endereco en = new Endereco();
-//                    en.setRua("Salvina Maria Do Carmo");
-//                    en.setBairro("Flavio Garcia");
-//                    en.setComplemento("Ao Lado da Publisom");
-//                    en.setNumero((short) 12);
-//                    en.setCEP("79400-000");
-//                    en.setSemNumero(false);
-////                    en.setMunicipio(m);
-//
-//                    Editora editora = new Editora();
-//                    editora.setNome("Rafael Producoes");
-//                    editora.setEndereco(en);
-//
-//                    Livro livro = new Livro();
-//                    livro.setNome("Rafael e o Ladrao de Codigo");
-//                    livro.setIsbn(23123123);
-//                    livro.setIdioma(TipoIdioma.INGLES);
-//                    livro.setAno_publicacao(LocalDate.now());
-//                    livro.setClassificacao(TipoClassificacao.CIENTIFICO);
-//                    livro.setEdicao(Short.parseShort("5"));
-//                    livro.setEditora(editora);
-//                    
-//                    Autor autor = DAOFactory.getInstance().getAutorDAO().get(1);
-//                    System.out.println(autor.getNome());
-//                    List<Autor> autores = new ArrayList<>();
-//                    autores.add(autor);
-//                    livro.setAutores(autores);
-//                    System.out.println(livro.getAutores().get(0).getNome());
-//                    
-//                    DAOFactory.getInstance().getLivro().insert(livro);
-//                  
+                    MenuEndereco();
                     break;
                 case "4":
-                    Usuario bean = (Usuario) DAOFactory.getInstance().getUsuarioDAO().get(2);
-                    System.out.println(bean);
-//                    if (bean == null) {
-//                        System.out.println("Bean e Nullo");
-//                    } else if (bean instanceof Estudante) {
-//                       System.out.println(bean);
-//                    } else if (bean instanceof Professor) {
-//                        System.out.println(bean);
-//                    }
+                    MenuEditora();
                     break;
                 case "5":
                     MenuLivros();
                     break;
                 case "6":
-                    System.out.println("MENU AUTORES");
-                    System.out.println("1 - Insert\n"
-                            + "2 - Update\n"
-                            + "3 - Delete\n"
-                            + "4 - Get\n"
-                            + "5 - GetALL");
-                    String opcaoAutores = leia.readLine();
-                    Autor a = new Autor();
-                    switch (opcaoAutores) {
-                        case "1":
-
-                            System.out.print("Nome: ");
-                            a.setNome(leia.readLine());
-                            System.out.print("Nacionalidade: ");
-                            a.setNacionalidade(TipoNacionalidade.valueOf(leia.readLine()));
-                            DAOFactory.getInstance().getAutorDAO().save(a);
-                            break;
-                        case "2":
-                            a = DAOFactory.getInstance().getAutorDAO().get(1);
-                            System.out.print("Novo Nome");
-                            a.setNome(leia.readLine());
-                            System.out.print("Nova Nascionalidade");
-                            a.setNacionalidade(TipoNacionalidade.valueOf(leia.readLine()));
-                            break;
-                        case "3":
-                            DAOFactory.getInstance().getAutorDAO().delete(Integer.parseInt(leia.readLine()));
-                            break;
-                        case "4":
-                            a = DAOFactory.getInstance().getAutorDAO().get(1);
-                            System.out.println(a.getNome());
-                            System.out.println(a.getNacionalidade().toString());
-                            break;
-                        case "5":
-                            break;
-
-                    }
+                    MenuAutor();
                     break;
                 case "7":
                     MenuEmprestimo();
@@ -253,16 +91,236 @@ public class ControllerPrincipal {
         }
     }
 
+    private void MenuEscolhaTipoUsuario() throws IOException, SQLException {
+        System.out.println("Menu Tipo Usuario\n"
+                + "1 - Estudante\n"
+                + "2 - Professor");
+        String tipo = leia.readLine();
+        switch (tipo) {
+            case "1":
+                MenuEstudante();
+                break;
+            case "2":
+                MenuProfessor();
+                break;
+            default:
+                System.out.println("Tipo Invalido!");
+        }
+
+    }
+
     private void MenuEditora() throws IOException, SQLException {
+        System.out.println("MENU EDITORA");
+        System.out.println("1 - Insert\n"
+                + "2 - Update\n"
+                + "3 - Delete\n"
+                + "4 - Get\n"
+                + "5 - GetALL");
+        String opcaoEditora = leia.readLine();
+        Editora editora = new Editora();
+        switch (opcaoEditora) {
+            case "1":
+                System.out.print("Nome: ");
+                editora.setNome(leia.readLine());
+                System.out.println("Cidade: ");
+                editora.setCidade(leia.readLine());
+                DAOFactory.getInstance().getEditoraDAO().save(editora);
+                break;
+            case "2":
+                System.out.println("INFORME ID EDITORA UPDATE");
+                editora = DAOFactory.getInstance().getEditoraDAO().get(Integer.parseInt(leia.readLine()));
+                System.out.print("Nome: ");
+                editora.setNome(leia.readLine());
+                System.out.println("Cidade: ");
+                editora.setCidade(leia.readLine());
+
+                DAOFactory.getInstance().getEditoraDAO().save(editora);
+                break;
+            case "3":
+                System.out.println("DELETAR ESTUDANTE");
+                DAOFactory.getInstance().getEditoraDAO().delete(Integer.parseInt(leia.readLine()));
+                break;
+            case "4":
+                System.out.println("GET ESTUDANTE");
+                System.out.println(DAOFactory.getInstance().getEditoraDAO().get(Integer.parseInt(leia.readLine())));
+                break;
+            case "5":
+                System.out.println("GET ALL");
+
+                for (Editora ed : DAOFactory.getInstance().getEditoraDAO().getAll()) {
+                    System.out.println(ed);
+                }
+                break;
+        }
     }
 
     private void MenuTelefone() throws IOException, SQLException {
+
+        Telefone t = new Telefone();
+        t.setDDD("24");
+        t.setNumero("12312311");
+        t.setPrincipal(true);
+        t.setTipo(TipoTelefone.CELULAR);
+
     }
 
-    private void MenuUsuario() throws IOException, SQLException {
+    private void MenuEstudante() throws IOException, SQLException {
+        System.out.println("MENU Estudate");
+        System.out.println("1 - Insert\n"
+                + "2 - Update\n"
+                + "3 - Delete\n"
+                + "4 - Get\n"
+                + "5 - GetALL");
+        String opcaoEstudante = leia.readLine();
+        Estudante user = new Estudante();
+        switch (opcaoEstudante) {
+            case "1":
+                System.out.println("Tipo Estudante");
+                System.out.print("Nome: ");
+                user.setNome(leia.readLine());
+                System.out.println("Titulacao: ");
+                user.setTitulacao(TipoTitulacao.valueOf(leia.readLine()));
+                System.out.println("DATA INICIO CONTRATO");
+                user.setInicio_contrato(SetDate());
+                System.out.println("DATA FIM CONTRATO");
+                user.setFim_contrato(SetDate());
+                System.out.println("DATA NASCIMENTO");
+                user.setData_nascimento(SetDate());
+                System.out.println("CPF");
+                user.setCpf(leia.readLine());
+                System.out.println("CUSO");
+                user.setCurso(TipoCurso.valueOf(leia.readLine()));
+                System.out.println("RGA");
+                user.setRga(leia.readLine());
+                DAOFactory.getInstance().getUsuarioDAO().save(user);
+                break;
+            case "2":
+                user = DAOFactory.getInstance().getEstudanteDAO().get(Integer.parseInt(leia.readLine()));
+                System.out.println("Tipo Estudante");
+                System.out.print("Nome: ");
+                user.setNome(leia.readLine());
+                System.out.println("Titulacao: ");
+                user.setTitulacao(TipoTitulacao.valueOf(leia.readLine()));
+                System.out.println("DATA INICIO CONTRATO");
+                user.setInicio_contrato(SetDate());
+                System.out.println("DATA FIM CONTRATO");
+                user.setFim_contrato(SetDate());
+                System.out.println("DATA NASCIMENTO");
+                user.setData_nascimento(SetDate());
+                System.out.println("CPF");
+                user.setCpf(leia.readLine());
+                System.out.println("CUSO");
+                user.setCurso(TipoCurso.valueOf(leia.readLine()));
+                System.out.println("RGA");
+                user.setRga(leia.readLine());
+                DAOFactory.getInstance().getUsuarioDAO().save(user);
+                break;
+            case "3":
+                System.out.println("DELETAR ESTUDANTE");
+                DAOFactory.getInstance().getEstudanteDAO().delete(Integer.parseInt(leia.readLine()));
+                break;
+            case "4":
+                System.out.println("GET ESTUDANTE");
+                System.out.println(DAOFactory.getInstance().getEstudanteDAO().get(Integer.parseInt(leia.readLine())));
+                break;
+            case "5":
+                System.out.println("GET ALL");
+
+                for (Estudante est : DAOFactory.getInstance().getEstudanteDAO().getAll()) {
+                    System.out.println(est);
+                }
+                break;
+        }
+    }
+
+    private void MenuProfessor() throws IOException, SQLException {
+        System.out.println("MENU PROFESSOR");
+        System.out.println("1 - Insert\n"
+                + "2 - Update\n"
+                + "3 - Delete\n"
+                + "4 - Get\n"
+                + "5 - GetALL");
+        String opcaoProfessor = leia.readLine();
+        Professor user = new Professor();
+        switch (opcaoProfessor) {
+            case "1":
+
+                System.out.println("Tipo Professor");
+                System.out.print("Nome: ");
+                user.setNome(leia.readLine());
+                System.out.println("Titulacao: ");
+                user.setTitulacao(TipoTitulacao.valueOf(leia.readLine()));
+                System.out.println("DATA INICIO CONTRATO");
+                user.setInicio_contrato(SetDate());
+                System.out.println("DATA FIM CONTRATO");
+                user.setFim_contrato(SetDate());
+                System.out.println("DATA NASCIMENTO");
+                user.setData_nascimento(SetDate());
+                System.out.println("CPF");
+                user.setCpf(leia.readLine());
+                System.out.println("CUSO");
+                user.setCurso(TipoCurso.valueOf(leia.readLine()));
+                System.out.println("SIAP");
+                user.setSiap(Integer.parseInt(leia.readLine()));
+                System.out.println("YES / NOT Substituto");
+                user.setIs_substituto(Boolean.parseBoolean(leia.readLine()));
+
+                DAOFactory.getInstance().getUsuarioDAO().save(user);
+                break;
+            case "2":
+                System.out.println("INFORME O ID DO PROFESSOR: ");
+                user = DAOFactory.getInstance().getProfessorDAO().get(Integer.parseInt(leia.readLine()));
+                System.out.println("Tipo Estudante");
+                System.out.print("Nome: ");
+                user.setNome(leia.readLine());
+                System.out.println("Titulacao: ");
+                user.setTitulacao(TipoTitulacao.valueOf(leia.readLine()));
+                System.out.println("DATA INICIO CONTRATO");
+                user.setInicio_contrato(SetDate());
+                System.out.println("DATA FIM CONTRATO");
+                user.setFim_contrato(SetDate());
+                System.out.println("DATA NASCIMENTO");
+                user.setData_nascimento(SetDate());
+                System.out.println("CPF");
+                user.setCpf(leia.readLine());
+                System.out.println("CUSO");
+                user.setCurso(TipoCurso.valueOf(leia.readLine()));
+                System.out.println("RGA");
+                user.setSiap(Integer.parseInt(leia.readLine()));
+                DAOFactory.getInstance().getUsuarioDAO().save(user);
+                break;
+            case "3":
+                System.out.println("DELETAR ESTUDANTE");
+                DAOFactory.getInstance().getProfessorDAO().delete(Integer.parseInt(leia.readLine()));
+                break;
+            case "4":
+                System.out.println("GET ESTUDANTE");
+                System.out.println(DAOFactory.getInstance().getProfessorDAO().get(Integer.parseInt(leia.readLine())));
+                break;
+            case "5":
+                System.out.println("GET ALL");
+
+                for (Professor p : DAOFactory.getInstance().getProfessorDAO().getAll()) {
+                    System.out.println(p);
+                }
+                break;
+        }
     }
 
     private void MenuEndereco() throws IOException, SQLException {
+        Municipio m = new Municipio();
+        m.setIbge(1);
+        m.setNome("Coxim");
+        m.setUf(UF.MS);
+
+        Endereco endereco = new Endereco();
+        endereco.setRua("Salvina Maria Do Carmo");
+        endereco.setBairro("Flavio Garcia");
+        endereco.setComplemento("Ao Lado da Publisom");
+        endereco.setNumero((short) 12);
+        endereco.setCEP("79400-000");
+        endereco.setSemNumero(false);
+        endereco.setMunicipio(m);
     }
 
     private void MenuEmprestimo() throws IOException, SQLException {
@@ -286,6 +344,7 @@ public class ControllerPrincipal {
                 DAOFactory.getInstance().getEmprestimoDAO().save(emprestimo);
                 break;
             case "2":
+                System.out.println("Informe a id do livro buscado para update");
                 emprestimo = DAOFactory.getInstance().getEmprestimoDAO().get(Integer.parseInt(leia.readLine()));
                 System.out.print("Id Livro: ");
                 emprestimo.setLivro((Livro) DAOFactory.getInstance().getLivro().get(Integer.parseInt(leia.readLine())));
@@ -306,10 +365,10 @@ public class ControllerPrincipal {
             case "5":
                 System.out.println("GET ALL");
 
-//                for (Emprestimo emprestimo : DAOFactory.getInstance().getEmprestimoDAO().getAll(Integer.parseInt(leia.readLine()))) {
-//
-//                    System.out.println(emprestimo);
-//                }
+                for (Emprestimo emp : DAOFactory.getInstance().getEmprestimoDAO().getAll()) {
+
+                    System.out.println(emp);
+                }
                 break;
 
         }
@@ -317,7 +376,43 @@ public class ControllerPrincipal {
     }
 
     private void MenuAutor() throws IOException, SQLException {
+        System.out.println("MENU AUTORES");
+        System.out.println("1 - Insert\n"
+                + "2 - Update\n"
+                + "3 - Delete\n"
+                + "4 - Get\n"
+                + "5 - GetALL");
+        String opcaoAutores = leia.readLine();
+        Autor a = new Autor();
+        switch (opcaoAutores) {
+            case "1":
 
+                System.out.print("Nome: ");
+                a.setNome(leia.readLine());
+                System.out.print("Nacionalidade: ");
+                a.setNacionalidade(TipoNacionalidade.valueOf(leia.readLine()));
+                DAOFactory.getInstance().getAutorDAO().save(a);
+                break;
+            case "2":
+                a = DAOFactory.getInstance().getAutorDAO().get(1);
+                System.out.print("Novo Nome");
+                a.setNome(leia.readLine());
+                System.out.print("Nova Nascionalidade");
+                a.setNacionalidade(TipoNacionalidade.valueOf(leia.readLine()));
+                break;
+            case "3":
+                DAOFactory.getInstance().getAutorDAO().delete(Integer.parseInt(leia.readLine()));
+                break;
+            case "4":
+                System.out.println(DAOFactory.getInstance().getAutorDAO().get(Integer.parseInt(leia.readLine())));
+                break;
+            case "5":
+                for (Autor autor : DAOFactory.getInstance().getAutorDAO().getAll()) {
+                    System.out.println(autor);
+                }
+                break;
+
+        }
     }
 
     private void MenuLivros() throws IOException, SQLException {
@@ -328,8 +423,7 @@ public class ControllerPrincipal {
                 + "4 - Get\n"
                 + "5 - GetALL\n");
         String opcaoLivros = leia.readLine();
-        String data;
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
         Livro l = new Livro();
         switch (opcaoLivros) {
             case "1":
@@ -348,13 +442,7 @@ public class ControllerPrincipal {
                 System.out.println(l.getEditora().getNome());
                 SubMenuAddAutor(l);
                 System.out.println("Informe a data de publicacao do livro");
-                data = leia.readLine();
-                if (!data.equals("")) {
-                    LocalDate dt = LocalDate.parse(data, f);
-                    l.setAno_publicacao(dt);
-                } else {
-                    l.setAno_publicacao(null);
-                }
+                l.setAno_publicacao(SetDate());
                 DAOFactory.getInstance().getLivro().save(l);
                 break;
             case "2":
@@ -374,27 +462,37 @@ public class ControllerPrincipal {
                 System.out.println(l.getEditora().getNome());
                 SubMenuAddAutor(l);
                 System.out.println("Informe a data de publicacao do livro");
-
-                data = leia.readLine();
-
-                if (!data.equals("")) {
-                    LocalDate dt = LocalDate.parse(data, f);
-                    l.setAno_publicacao(dt);
-                } else {
-                    l.setAno_publicacao(null);
-                }
+                l.setAno_publicacao(SetDate());
                 DAOFactory.getInstance().getLivro().save(l);
                 break;
             case "3":
-                DAOFactory.getInstance().getLivro().delete(3);
+                System.out.println("Informe um numero do id do autor para excluir");
+                DAOFactory.getInstance().getLivro().delete(Integer.parseInt(leia.readLine()));
                 break;
             case "4":
-                System.out.println(DAOFactory.getInstance().getLivro().get(4));
+                System.out.println("Informe um id para get");
+                System.out.println(DAOFactory.getInstance().getLivro().get(Integer.parseInt(leia.readLine())));
                 break;
             case "5":
+                System.out.println("Get all");
+                for (Livro livro : DAOFactory.getInstance().getLivro().getAll()) {
+                    System.out.println(livro);
+                }
                 break;
 
         }
+    }
+
+    private LocalDate SetDate() throws IOException {
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String data = leia.readLine();
+        if (!data.equals("")) {
+            LocalDate dt = LocalDate.parse(data, f);
+            return dt;
+        } else {
+            return null;
+        }
+
     }
 
     private void SubMenuAddAutor(Livro l) throws IOException, SQLException {
@@ -418,7 +516,4 @@ public class ControllerPrincipal {
         }
     }
 
-    private void MenuCadastroEndereco() throws SQLException {
-
-    }
 }

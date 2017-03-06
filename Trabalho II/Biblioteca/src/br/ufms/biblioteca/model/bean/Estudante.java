@@ -19,7 +19,6 @@ import java.util.ListIterator;
 public class Estudante extends Usuario {
 
     private String rga;
-  
 
     public String getRga() {
         return rga;
@@ -27,6 +26,14 @@ public class Estudante extends Usuario {
 
     public void setRga(String rga) {
         this.rga = rga;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder saida = new StringBuilder();
+        saida.append(super.toString()).append("\n");
+        saida.append("RGA: ").append(rga).append("\n");
+        return saida.toString();
     }
 
 }

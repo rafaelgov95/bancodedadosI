@@ -1,6 +1,3 @@
-
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -74,7 +71,7 @@ public class AutorDAO extends ReadWriteDAO<Autor, Integer> {
             ps.setInt(1, codigo);
             ps.execute();
         }
-   
+
     }
 
     @Override
@@ -87,13 +84,14 @@ public class AutorDAO extends ReadWriteDAO<Autor, Integer> {
                 if (rs.first()) {
                     setGeneratedKey(autor, rs.getInt("id"));
                     autor.setNome(rs.getString("nome"));
-                    autor.setNacionalidade(TipoNacionalidade.BRASILEIRO);
+                    autor.setNacionalidade(TipoNacionalidade.valueOf(rs.getString("nacionalidade").toUpperCase()));
                 }
             }
         }
         return autor;
     }
-      protected Autor getFindName(Connection conn, String codigo) throws SQLException {
+
+    protected Autor getFindName(Connection conn, String codigo) throws SQLException {
         final String sql = "SELECT * FROM Biblioteca.autores WHERE name = ?";
         Autor autor = new Autor();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -102,7 +100,7 @@ public class AutorDAO extends ReadWriteDAO<Autor, Integer> {
                 if (rs.first()) {
                     setGeneratedKey(autor, rs.getInt("id"));
                     autor.setNome(rs.getString("nome"));
-                    autor.setNacionalidade(TipoNacionalidade.BRASILEIRO);
+                    autor.setNacionalidade(TipoNacionalidade.valueOf(rs.getString("nacionalidade")));
                 }
             }
         }
@@ -120,7 +118,7 @@ public class AutorDAO extends ReadWriteDAO<Autor, Integer> {
                     Autor autor = new Autor();
                     setGeneratedKey(autor, rs.getInt("id"));
                     autor.setNome(rs.getString("nome"));
-                    autor.setNacionalidade(TipoNacionalidade.BRASILEIRO);
+                    autor.setNacionalidade(TipoNacionalidade.valueOf(rs.getString("nacionalidade")));
                     autores.add(autor);
                 }
             }

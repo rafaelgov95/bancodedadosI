@@ -75,10 +75,7 @@ public class EstudanteDAO extends UsuarioDAO<Estudante> {
 //            return "SELECT * FROM Biblioteca.estudantes where id = ?";
 //
 //    }
-    @Override
-    protected void delete(Connection conn, Integer codigo) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 
     @Override
     protected Estudante resultSetToBean(Connection conn, ResultSet rs) throws SQLException {

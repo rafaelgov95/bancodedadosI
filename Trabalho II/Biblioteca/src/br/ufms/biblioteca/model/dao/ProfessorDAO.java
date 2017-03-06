@@ -27,9 +27,6 @@ public class ProfessorDAO extends UsuarioDAO<Professor> {
         super(Professor.class);
     }
 
-  
-    
-
     @Override
     protected void insertAbst(Connection conn, Professor bean) throws SQLException {
         final String sql = "INSERT INTO Biblioteca.professores (id, siap,is_substituto) VALUES ( ?,?,?)";
@@ -64,11 +61,6 @@ public class ProfessorDAO extends UsuarioDAO<Professor> {
         populateBean(p, conn, rs);
         setGeneratedKey(p, rs.getInt("id"));
         return p;
-    }
-
-    @Override
-    protected void delete(Connection conn, Integer codigo) throws SQLException {
-        System.out.println("akele problema no delete professor fdp");
     }
 
 }

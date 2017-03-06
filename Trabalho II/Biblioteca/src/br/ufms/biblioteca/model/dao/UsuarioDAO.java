@@ -210,9 +210,10 @@ public abstract class UsuarioDAO<B extends Usuario> extends ReadWriteDAO<B, Inte
             conn.setAutoCommit(true);
         }
     }
-
-    protected void delete(Connection conn, Long codigo) throws SQLException {
-        final String sql = "DELETE FROM desafio.usuario WHERE codigo = ?";
+    
+    @Override
+    protected void delete(Connection conn, Integer codigo) throws SQLException {
+        final String sql = "DELETE FROM Biblioteca.usuarios WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, codigo);
             ps.executeUpdate();
@@ -222,7 +223,7 @@ public abstract class UsuarioDAO<B extends Usuario> extends ReadWriteDAO<B, Inte
     @Override
     protected B get(Connection conn, Integer codigo) throws SQLException {
         B bean = null;
-        String sql = "select d.id ,d.nome,d.curso,d.cpf,d.titulacao,d.data_inicio_contrato,d.data_fim_contrato,d.data_nascimento,d.data_at,p.rga,m.siap,m.is_substituto,m.admissao from usuarios d left join estudantes p on (p.id = d.id) left join professores m on (m.id = d.id) where d.id = ?";
+        String sql = "select d.id ,d.nome,d.curso,d.cpf,d.titulacao,d.data_inicio_contrato,d.data_fim_contrato,d.data_nascimento,d.data_at,p.rga,m.siap,m.is_substituto from usuarios d left join estudantes p on (p.id = d.id) left join professores m on (m.id = d.id) where d.id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, codigo);
             try (ResultSet rs = ps.executeQuery()) {
@@ -231,12 +232,11 @@ public abstract class UsuarioDAO<B extends Usuario> extends ReadWriteDAO<B, Inte
                         Estudante e = new Estudante();
                         populateBean((B) e, conn, rs);
                         e.setRga(rs.getString("rga"));
-
                         return (B) e;
                     } else {
                         Professor p = new Professor();
                         populateBean((B) p, conn, rs);
-                        p.setInicio_contrato(rs.getDate("date_inicio_contrato").toLocalDate());
+                        p.setInicio_contrato(rs.getDate("data_inicio_contrato").toLocalDate());
                         p.setSiap(rs.getInt("siap"));
                         p.setIs_substituto(rs.getBoolean("is_substituto"));
                         return (B) p;

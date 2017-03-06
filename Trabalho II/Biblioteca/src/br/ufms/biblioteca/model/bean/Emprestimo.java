@@ -7,7 +7,6 @@ package br.ufms.biblioteca.model.bean;
 
 import br.ufms.biblioteca.model.daolib.Bean;
 import java.time.LocalTime;
-import java.util.List;
 
 /**
  *

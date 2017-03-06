@@ -34,8 +34,8 @@ public class Professor extends Usuario {
 
     @Override
     public String toString() {
-        super.toString();
         StringBuilder saida = new StringBuilder();
+        saida.append(super.toString()).append("\n");
         saida.append("SIAP: ").append(siap).append("\n");
         saida.append("Substituto: ").append(String.valueOf(is_substituto)).append("\n");
         return saida.toString();

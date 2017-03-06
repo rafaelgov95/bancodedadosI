@@ -138,7 +138,7 @@ public abstract class Usuario extends Bean<Integer> implements Serializable {
         saida.append("Data Nascimento: ").append(data_nascimento).append("\n");
         saida.append("Data Inicio Contrato: ").append(inicio_contrato).append("\n");
         saida.append("Data Fim Contrato: ").append(fim_contrato).append("\n");
-        saida.append("Data Criação: ").append(data_at).append("\n");
+        saida.append("Data Criação: ").append(data_at);
         return saida.toString();
     }
 }
