@@ -35,8 +35,7 @@ public class EstudanteDAO extends UsuarioDAO<Estudante> {
 
     @Override
     protected void insertAbst(Connection conn, Estudante bean) throws SQLException {
-        System.out.println("Chego aqui");
-        final String sql = "INSERT INTO Biblioteca.estudantes (id, rga) VALUES (?, ?)";
+       final String sql = "INSERT INTO Biblioteca.estudantes (id, rga) VALUES (?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, bean.getCodigo());
@@ -49,7 +48,13 @@ public class EstudanteDAO extends UsuarioDAO<Estudante> {
 
     @Override
     protected void updateAbst(Connection conn, Estudante bean) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     final String sql = "UPDATE Biblioteca.estudantes SET rga = ? WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, bean.getRga());
+            ps.setLong(2, bean.getCodigo());
+            ps.executeUpdate();
+
+        }
     }
 
 //    @Override

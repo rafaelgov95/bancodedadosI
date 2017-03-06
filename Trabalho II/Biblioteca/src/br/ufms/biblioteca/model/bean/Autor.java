@@ -20,9 +20,6 @@ public class Autor extends Bean<Integer> {
     private String nome;
     private TipoNacionalidade nacionalidade;
 
-//    private List<TipoClassificacao> Generos;
-//    private List<Livro> livros;
-
     public String getNome() {
         return nome;
     }
@@ -37,5 +34,13 @@ public class Autor extends Bean<Integer> {
 
     public void setNacionalidade(TipoNacionalidade nacionalidade) {
         this.nacionalidade = nacionalidade;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder saida = new StringBuilder();
+        saida.append("Nome do Autor: ").append(nome).append("\n");
+        saida.append("Nacionalidade do Autor: ").append(nacionalidade).append("\n");
+        return saida.toString();
     }
 }

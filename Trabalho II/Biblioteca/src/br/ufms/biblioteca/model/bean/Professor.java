@@ -15,7 +15,6 @@ public class Professor extends Usuario {
 
     private int siap;
     private boolean is_substituto;
-    private LocalDate admissao;
 
     public int getSiap() {
         return siap;
@@ -33,14 +32,13 @@ public class Professor extends Usuario {
         this.is_substituto = is_substituto;
     }
 
-    public LocalDate getAdmissao() {
-        return admissao;
+    @Override
+    public String toString() {
+        super.toString();
+        StringBuilder saida = new StringBuilder();
+        saida.append("SIAP: ").append(siap).append("\n");
+        saida.append("Substituto: ").append(String.valueOf(is_substituto)).append("\n");
+        return saida.toString();
     }
-
-    public void setAdmissao(LocalDate admissao) {
-        this.admissao = admissao;
-    }
-
-    
 
 }

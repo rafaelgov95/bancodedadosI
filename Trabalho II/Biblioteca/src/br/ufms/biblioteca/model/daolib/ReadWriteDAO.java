@@ -28,7 +28,6 @@ public abstract class ReadWriteDAO<B extends Bean<T>, T extends Serializable> ex
 
     protected void setGeneratedKey(B bean, T codigo) {
         bean.setCodigo(codigo);
-        System.out.println("Entro aqui"+codigo);
     }
 
     /**

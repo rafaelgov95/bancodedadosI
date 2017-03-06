@@ -27,35 +27,31 @@ public class ProfessorDAO extends UsuarioDAO<Professor> {
         super(Professor.class);
     }
 
-
-    @Override
-    protected void delete(Connection conn, Integer codigo) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+  
+    
 
     @Override
     protected void insertAbst(Connection conn, Professor bean) throws SQLException {
-        final String sql = "INSERT INTO Biblioteca.professores (id, siap,is_substituto,admissao) VALUES (?, ?,?,?)";
+        final String sql = "INSERT INTO Biblioteca.professores (id, siap,is_substituto) VALUES ( ?,?,?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, bean.getCodigo());
             ps.setInt(2, bean.getSiap());
             ps.setBoolean(3, bean.isIs_substituto());
-            ps.setDate(4, Date.valueOf(bean.getAdmissao()));
+
             ps.executeUpdate();
         }
-//        conn.commit();
     }
 
     @Override
     protected void updateAbst(Connection conn, Professor bean) throws SQLException {
-        final String sql = "UPDATE Biblioteca.professores SET siap = ?,is_substituto=?,admissao = ? WHERE id = ?";
+        final String sql = "UPDATE Biblioteca.professores SET siap = ?,is_substituto=?WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, bean.getSiap());
             ps.setBoolean(2, bean.isIs_substituto());
-            ps.setDate(3, Date.valueOf(bean.getAdmissao()));
-            ps.setLong(4, bean.getCodigo());
+
+            ps.setLong(3, bean.getCodigo());
             ps.executeUpdate();
 
         }
@@ -67,12 +63,12 @@ public class ProfessorDAO extends UsuarioDAO<Professor> {
         Professor p = new Professor();
         populateBean(p, conn, rs);
         setGeneratedKey(p, rs.getInt("id"));
-        System.out.println("chego aqui");
         return p;
     }
 
-    
+    @Override
+    protected void delete(Connection conn, Integer codigo) throws SQLException {
+        System.out.println("akele problema no delete professor fdp");
+    }
 
-   
-   
 }

@@ -18,6 +18,7 @@ public abstract class Usuario extends Bean<Integer> implements Serializable {
     private TipoCurso curso;
     private String cpf;
     private TipoTitulacao titulacao;
+    private LocalDate inicio_contrato;
     private LocalDate fim_contrato;
     private LocalDate data_nascimento;
     private LocalDate data_at;
@@ -111,11 +112,33 @@ public abstract class Usuario extends Bean<Integer> implements Serializable {
         this.cpf = cpf;
     }
 
+    public LocalDate getInicio_contrato() {
+        return inicio_contrato;
+    }
+
+    public void setInicio_contrato(LocalDate inicio_contrato) {
+        this.inicio_contrato = inicio_contrato;
+    }
+
     public LocalDate getFim_contrato() {
         return fim_contrato;
     }
 
     public void setFim_contrato(LocalDate fim_contrato) {
         this.fim_contrato = fim_contrato;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder saida = new StringBuilder();
+        saida.append("Nome: ").append(nome).append("\n");
+        saida.append("CPF: ").append(cpf).append("\n");
+        saida.append("Titulação: ").append(titulacao).append("\n");
+        saida.append("Curso: ").append(curso).append("\n");
+        saida.append("Data Nascimento: ").append(data_nascimento).append("\n");
+        saida.append("Data Inicio Contrato: ").append(inicio_contrato).append("\n");
+        saida.append("Data Fim Contrato: ").append(fim_contrato).append("\n");
+        saida.append("Data Criação: ").append(data_at).append("\n");
+        return saida.toString();
     }
 }

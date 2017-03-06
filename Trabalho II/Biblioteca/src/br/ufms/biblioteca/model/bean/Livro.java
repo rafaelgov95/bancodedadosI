@@ -7,10 +7,14 @@ package br.ufms.biblioteca.model.bean;
 
 import br.ufms.biblioteca.model.bean.enumerate.TipoClassificacao;
 import br.ufms.biblioteca.model.bean.enumerate.TipoIdioma;
+import br.ufms.biblioteca.model.dao.DAOFactory;
 import br.ufms.biblioteca.model.daolib.Bean;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -92,8 +96,31 @@ public class Livro extends Bean<Integer> {
     }
 
     public void setAutores(List<Autor> autores) {
-        
+
         this.autores = autores;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        output.append("Código: ").append(this.getCodigo()).append("\n");
+        output.append("Nome: ").append(this.getNome()).append("\n");
+        output.append("Isbn: ").append(this.getIsbn()).append("\n");
+        output.append("Idioma: ").append(this.getIdioma()).append("\n");
+        output.append("Edicao: ").append(this.getEdicao()).append("\n");
+        output.append("Editora: ").append(this.getEditora().getNome()).append("\n");
+        output.append("Ano Publicação: ").append(this.getAno_publicacao()).append("\n");
+        output.append("Autores: ").append("\n");
+
+        for (Autor autor : autores) {
+            try {
+                output.append(DAOFactory.getInstance().getAutorDAO().get(autor.getCodigo())).append("\n");
+            } catch (SQLException ex) {
+                Logger.getLogger(Livro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        return output.toString();
     }
 
 }

@@ -57,9 +57,32 @@ public class LivroDAO extends ReadWriteDAO<Livro, Integer> {
             }
 
             for (Autor autor : bean.getAutores()) {
-                addHasAutor(conn, autor, bean.getCodigo(), 1);
+                addHasAutor(conn, autor, bean.getCodigo(), bean.getEditora().getCodigo());
             }
             conn.commit();
+        }
+    }
+
+    private void deleteHasAutor(Connection conn, Livro l) throws SQLException {
+        final String sql = "DELETE FROM livros_has_autores where id_livro =?";
+        try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.NO_GENERATED_KEYS)) {
+            conn.setAutoCommit(false);
+            ps.setObject(1, l.getCodigo());
+            ps.executeUpdate();
+        }
+    }
+
+    protected void updateHasAutor(Connection conn, Autor bean, Serializable... dependencies) throws SQLException {
+
+        final String sql = "INSERT INTO Biblioteca.livros_has_autores SET id_autor=?,id_livro_editora) where id_livro=?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.NO_GENERATED_KEYS)) {
+            conn.setAutoCommit(false);
+            ps.setObject(1, dependencies[0]);
+            ps.setObject(2, bean.getCodigo());
+
+            ps.setObject(3, dependencies[1]);
+            ps.executeUpdate();
         }
     }
 
@@ -70,15 +93,47 @@ public class LivroDAO extends ReadWriteDAO<Livro, Integer> {
             conn.setAutoCommit(false);
             ps.setObject(1, dependencies[0]);
             ps.setObject(2, bean.getCodigo());
-            System.out.println(bean.getCodigo());
+
             ps.setObject(3, dependencies[1]);
             ps.executeUpdate();
         }
     }
 
+    protected List<Autor> getHasAutor(Connection conn, Livro bean) throws SQLException {
+        final String sql = "SELECT id_autor FROM Biblioteca.livros_has_autores where id_livro =  ?";
+        List<Autor> autores = new ArrayList();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, bean.getCodigo());
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    autores.add(DAOFactory.getInstance().getAutorDAO().get(rs.getInt("id_autor")));
+                }
+            }
+        }
+        return autores;
+
+    }
+
     @Override
     protected void update(Connection conn, Livro bean) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "UPDATE Biblioteca.livros SET nome=?, isbn=?,edicao=? ,classificacao=?,idioma=?,ano_publi=?,id_editora=? where id=? ";
+        try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            conn.setAutoCommit(false);
+            ps.setString(1, bean.getNome());
+            ps.setInt(2, bean.getIsbn());
+            ps.setShort(3, bean.getEdicao());
+            ps.setString(4, bean.getClassificacao() != null ? bean.getClassificacao().toString() : null);
+            ps.setObject(5, bean.getIdioma() != null ? bean.getIdioma().toString() : null);
+            ps.setDate(6, Date.valueOf(bean.getAno_publicacao()));
+            ps.setInt(7, bean.getEditora().getCodigo());
+            ps.setInt(8, bean.getCodigo());
+            ps.executeUpdate();
+            deleteHasAutor(conn,bean);
+            for (Autor autor : bean.getAutores()) {
+                addHasAutor(conn, autor, bean.getCodigo(), 1);
+            }
+            conn.commit();
+        }
     }
 
     @Override
@@ -102,12 +157,11 @@ public class LivroDAO extends ReadWriteDAO<Livro, Integer> {
                     livro.setNome(rs.getString("nome"));
                     livro.setIsbn(rs.getInt("isbn"));
                     livro.setEdicao(rs.getShort("edicao"));
-                    System.out.println(rs.getString("idioma"));
-                    System.out.println(TipoIdioma.setIdioma(rs.getString("idioma")));
                     livro.setIdioma(TipoIdioma.setIdioma(rs.getString("idioma")));
                     livro.setClassificacao(TipoClassificacao.valueOf(rs.getString("classificacao")));
                     livro.setAno_publicacao(rs.getDate("ano_publi").toLocalDate());
                     livro.setEditora((Editora) DAOFactory.getInstance().getEditoraDAO().get(rs.getInt("id_editora")));
+                    livro.getAutores().addAll(getHasAutor(conn, livro));
                 }
             }
         }

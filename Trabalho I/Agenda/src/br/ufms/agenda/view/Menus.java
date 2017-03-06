@@ -8,7 +8,7 @@ package br.ufms.agenda.view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
+
 import br.ufms.agenda.model.bean.Contato;
 import br.ufms.agenda.model.bean.Telefone;
 import br.ufms.agenda.model.bean.TipoTelefone;

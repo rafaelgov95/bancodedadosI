@@ -51,5 +51,14 @@ public class Emprestimo extends Bean<Integer> {
     public void setAtiva(boolean ativa) {
         this.ativa = ativa;
     }
-    
+
+    @Override
+    public String toString() {
+        StringBuilder saida = new StringBuilder();
+        saida.append("Id Emprestimo: ").append(this.getCodigo()).append("\n");
+        saida.append("Usuario:\n").append(this.getUsuario()).append("\n");
+        saida.append("Livro:\n ").append(this.getLivro()).append("\n");
+        return saida.toString();
+    }
+
 }
