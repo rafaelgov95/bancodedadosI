@@ -49,9 +49,9 @@ public class EnderecoDAO extends ReadWriteDAO<Endereco, Integer> {
     protected void insert(Connection conn, Endereco bean, Serializable... dependencies) throws SQLException {
         conn.setAutoCommit(false);
         if (dependencies.length < 1) {
-            throw new IllegalArgumentException("Dependência 'codigo_usuario' não informada");
+            throw new IllegalArgumentException("Dependência 'id_usuario' não informada");
         } else if (!(dependencies[0] instanceof Integer)) {
-            throw new ClassCastException("Dependência 'codigo_usuario' informada com tipo incorreto: "
+            throw new ClassCastException("Dependência 'id_usuario' informada com tipo incorreto: "
                     + dependencies[0].getClass().getName() + " cannot be cast to java.lang.Long");
         }
 
@@ -127,7 +127,7 @@ public class EnderecoDAO extends ReadWriteDAO<Endereco, Integer> {
      */
     @Override
     protected Endereco get(Connection conn, Integer codigo) throws SQLException {
-        final String sql = "SELECT * FROM desafio.endereco WHERE codigo = ?";
+        final String sql = "SELECT * FROM Biblioteca.enderecos WHERE id = ?";
         Endereco endereco = null;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, codigo);

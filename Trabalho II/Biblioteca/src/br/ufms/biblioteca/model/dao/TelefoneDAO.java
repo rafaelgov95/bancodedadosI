@@ -64,7 +64,7 @@ public class TelefoneDAO extends ReadWriteDAO<Telefone, Integer> {
 
     @Override
     protected void delete(Connection conn, Integer codigo) throws SQLException {
-        final String sql = "DELETE FROM Agenda.Telefones WHERE codigo = ?";
+        final String sql = "DELETE FROM Biblioteca.telefones WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, codigo);
             ps.executeUpdate();
@@ -73,7 +73,7 @@ public class TelefoneDAO extends ReadWriteDAO<Telefone, Integer> {
 
     @Override
     protected Telefone get(Connection conn, Integer codigo) throws SQLException {
-        final String sql = "SELECT * FROM Agenda.Telefones WHERE codigo = ?";
+        final String sql = "SELECT * FROM Biblioteca.telefones WHERE id = ?";
         Telefone telefone = null;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, codigo);
@@ -88,9 +88,8 @@ public class TelefoneDAO extends ReadWriteDAO<Telefone, Integer> {
 
     @Override
     protected List<Telefone> getAll(Connection conn) throws SQLException {
-        final String sql = "SELECT * FROM Agenda.Telefones";
+        final String sql = "SELECT * FROM Biblioteca.telefones";
         List<Telefone> telefones = new ArrayList<>();
-
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -102,9 +101,8 @@ public class TelefoneDAO extends ReadWriteDAO<Telefone, Integer> {
     }
 
     public List<Telefone> findByID(Connection conn, Integer contatoID) throws SQLException {
-        final String sql = "SELECT * FROM Agenda.Telefones WHERE contato_codigo = ?";
+        final String sql = "SELECT * FROM Biblioteca.telefones WHERE id = ?";
         List<Telefone> telefones = new ArrayList<>();
-
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, contatoID);
             try (ResultSet rs = ps.executeQuery()) {

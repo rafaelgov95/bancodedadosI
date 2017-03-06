@@ -154,14 +154,39 @@ public class ControllerPrincipal {
         }
     }
 
-    private void MenuTelefone() throws IOException, SQLException {
-
+    private Telefone CriaTelefone() throws IOException {
         Telefone t = new Telefone();
-        t.setDDD("24");
-        t.setNumero("12312311");
-        t.setPrincipal(true);
-        t.setTipo(TipoTelefone.CELULAR);
+        System.out.print("DDD: ");
+        t.setDDD(leia.readLine());
+        System.out.println("Numero: ");
+        t.setNumero(leia.readLine());
+        System.out.println("PRINCIAL? TRUE OU FALSE: ");
+        t.setPrincipal(Boolean.parseBoolean(leia.readLine()));
+        System.out.println("TPO TELEFONE [RESIDENCIAL, CELULAR, COMERCIAL]: ");
+        t.setTipo(TipoTelefone.valueOf(leia.readLine()));
+        return t;
+    }
 
+    private List<Telefone> MenuTelefone() throws IOException, SQLException {
+        boolean flag = true;
+        List<Telefone> listT = new ArrayList<>();
+
+        while (flag) {
+            System.out.println("Adicionar Telefone\n"
+                    + " 1 - Adicionar Telefone\n"
+                    + " 2 - Voltar");
+
+            String opcaoTel = leia.readLine();
+            switch (opcaoTel) {
+                case "1":
+                    listT.add(CriaTelefone());
+                    break;
+                case "2":
+                    flag = false;
+                    break;
+            }
+        }
+        return listT;
     }
 
     private void MenuEstudante() throws IOException, SQLException {
@@ -192,7 +217,11 @@ public class ControllerPrincipal {
                 user.setCurso(TipoCurso.valueOf(leia.readLine()));
                 System.out.println("RGA");
                 user.setRga(leia.readLine());
+                System.out.println("TELEFONES: ");
+                user.getTelefones().addAll(MenuTelefone());
+                user.getEnderecos().addAll(MenuEndereco());
                 DAOFactory.getInstance().getUsuarioDAO().save(user);
+
                 break;
             case "2":
                 user = DAOFactory.getInstance().getEstudanteDAO().get(Integer.parseInt(leia.readLine()));
@@ -213,6 +242,8 @@ public class ControllerPrincipal {
                 user.setCurso(TipoCurso.valueOf(leia.readLine()));
                 System.out.println("RGA");
                 user.setRga(leia.readLine());
+//              user.getTelefones().addAll(MenuTelefone());
+//              user.getEnderecos().addAll(MenuEndereco());
                 DAOFactory.getInstance().getUsuarioDAO().save(user);
                 break;
             case "3":
@@ -307,20 +338,49 @@ public class ControllerPrincipal {
         }
     }
 
-    private void MenuEndereco() throws IOException, SQLException {
-        Municipio m = new Municipio();
-        m.setIbge(1);
-        m.setNome("Coxim");
-        m.setUf(UF.MS);
+    private List<Endereco> MenuEndereco() throws IOException, SQLException {
+        boolean flag = true;
+        List<Endereco> listE = new ArrayList<>();
+
+        System.out.println("Adicionar Endereco\n"
+                + " 1 - Adicionar Endereco\n"
+                + " 2 - Voltar");
+        String opcaoTel = leia.readLine();
+        while (flag) {
+            switch (opcaoTel) {
+                case "1":
+                    listE.add(CriarEndereco());
+                    break;
+                case "2":
+                    flag = false;
+                    break;
+            }
+        }
+        return listE;
+
+//        Municipio m = new Municipio();
+//        m.setIbge(1);
+//        m.setNome("Coxim");
+//        m.setUf(UF.MS);
+    }
+
+    private Endereco CriarEndereco() throws IOException {
 
         Endereco endereco = new Endereco();
-        endereco.setRua("Salvina Maria Do Carmo");
-        endereco.setBairro("Flavio Garcia");
-        endereco.setComplemento("Ao Lado da Publisom");
-        endereco.setNumero((short) 12);
-        endereco.setCEP("79400-000");
+        System.out.print("RUA: ");
+        endereco.setRua(leia.readLine());
+        System.out.print("Bairo: ");
+        endereco.setBairro(leia.readLine());
+        System.out.print("Complemento: ");
+        endereco.setComplemento(leia.readLine());
+        System.out.print("Numero: ");
+        endereco.setNumero(Short.parseShort(leia.readLine()));
+        System.out.print("CEP: ");
+        endereco.setCEP(leia.readLine());
+        System.out.print("Possui Numero?");
         endereco.setSemNumero(false);
-        endereco.setMunicipio(m);
+
+        return endereco;
     }
 
     private void MenuEmprestimo() throws IOException, SQLException {

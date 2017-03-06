@@ -74,7 +74,7 @@ public class LivroDAO extends ReadWriteDAO<Livro, Integer> {
 
     protected void updateHasAutor(Connection conn, Autor bean, Serializable... dependencies) throws SQLException {
 
-        final String sql = "INSERT INTO Biblioteca.livros_has_autores SET id_autor=?,id_livro_editora) where id_livro=?";
+        final String sql = "INSERT INTO Biblioteca.livros_has_autores SET id_autor=? where id_livro=?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.NO_GENERATED_KEYS)) {
             conn.setAutoCommit(false);
@@ -87,14 +87,12 @@ public class LivroDAO extends ReadWriteDAO<Livro, Integer> {
     }
 
     protected void addHasAutor(Connection conn, Autor bean, Serializable... dependencies) throws SQLException {
-        final String sql = "INSERT INTO Biblioteca.livros_has_autores(id_livro,id_autor,id_livro_editora) VALUES (?,?, ?)";
+        final String sql = "INSERT INTO Biblioteca.livros_has_autores(id_livro,id_autor) VALUES (?,?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.NO_GENERATED_KEYS)) {
             conn.setAutoCommit(false);
             ps.setObject(1, dependencies[0]);
             ps.setObject(2, bean.getCodigo());
-
-            ps.setObject(3, dependencies[1]);
             ps.executeUpdate();
         }
     }
