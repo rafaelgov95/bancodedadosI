@@ -74,4 +74,24 @@ public class Telefone extends Bean<Integer> {
         this.principal = principal;
     }
 
+    @Override
+    public String toString() {
+        return super.toString(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof Telefone) {
+            String numero_is = ((Telefone) obj).getNumero();
+            String ddd_is = ((Telefone) obj).getDDD();
+            if (numero_is.equals(numero) && ddd_is.equals(ddd)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

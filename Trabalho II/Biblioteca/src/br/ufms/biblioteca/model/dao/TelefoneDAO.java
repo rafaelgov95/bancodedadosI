@@ -123,4 +123,9 @@ public class TelefoneDAO extends ReadWriteDAO<Telefone, Integer> {
         telefone.setPrincipal(rs.getBoolean("principal"));
         return telefone;
     }
+
+    @Override
+    protected Telefone get(Connection conn, String codigo) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

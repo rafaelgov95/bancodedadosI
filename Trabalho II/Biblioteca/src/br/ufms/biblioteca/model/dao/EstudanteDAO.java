@@ -5,11 +5,13 @@
  */
 package br.ufms.biblioteca.model.dao;
 
+import br.ufms.biblioteca.model.bean.Autor;
 import br.ufms.biblioteca.model.bean.Endereco;
 import br.ufms.biblioteca.model.bean.Estudante;
 import br.ufms.biblioteca.model.bean.Telefone;
 import br.ufms.biblioteca.model.bean.Usuario;
 import br.ufms.biblioteca.model.bean.enumerate.TipoCurso;
+import br.ufms.biblioteca.model.bean.enumerate.TipoNacionalidade;
 import br.ufms.biblioteca.model.bean.enumerate.TipoTitulacao;
 import br.ufms.biblioteca.model.daolib.Bean;
 import br.ufms.biblioteca.model.daolib.ReadWriteDAO;
@@ -35,20 +37,19 @@ public class EstudanteDAO extends UsuarioDAO<Estudante> {
 
     @Override
     protected void insertAbst(Connection conn, Estudante bean) throws SQLException {
-       final String sql = "INSERT INTO Biblioteca.estudantes (id, rga) VALUES (?, ?)";
+        final String sql = "INSERT INTO Biblioteca.estudantes (id, rga) VALUES (?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, bean.getCodigo());
             ps.setString(2, bean.getRga());
             ps.executeUpdate();
         }
-        System.out.println("Nome" + bean.getNome());
 
     }
 
     @Override
     protected void updateAbst(Connection conn, Estudante bean) throws SQLException {
-     final String sql = "UPDATE Biblioteca.estudantes SET rga = ? WHERE id = ?";
+        final String sql = "UPDATE Biblioteca.estudantes SET rga = ? WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, bean.getRga());
             ps.setLong(2, bean.getCodigo());
@@ -56,26 +57,6 @@ public class EstudanteDAO extends UsuarioDAO<Estudante> {
 
         }
     }
-
-//    @Override
-//    protected Estudante resultSetToBean(Connection conn, ResultSet rs) throws SQLException {
-//        Estudante estudante = new Estudante();
-//
-//        setGeneratedKey(estudante, rs.getInt("id"));
-//        
-////        estudante.setNome(DAOFactory.getInstance().getUsuarioDAO().get(conn, Integer.SIZE));
-////        estudante.setRga(rs.getString("rga"));
-////        estudante.setCurso(TipoCurso.setCurso(rs.getString("curso")));
-////        estudante.setRga(rs.getString("rga"));
-////        estudante.setTitulacao(TipoTitulacao.setTitulacao(rs.getString("titulacao")));
-//        return estudante;
-//    }
-//    @Override
-//    protected String sqlToGet() {
-//            return "SELECT * FROM Biblioteca.estudantes where id = ?";
-//
-//    }
-
 
     @Override
     protected Estudante resultSetToBean(Connection conn, ResultSet rs) throws SQLException {

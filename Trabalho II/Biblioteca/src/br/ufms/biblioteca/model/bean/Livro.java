@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @author rafael
  */
 public class Livro extends Bean<Integer> {
-
+    
     private String nome;
     private int isbn;
     private Short edicao;
@@ -30,76 +30,76 @@ public class Livro extends Bean<Integer> {
     private LocalDate ano_publicacao;
     private Editora editora;
     private List<Autor> autores;
-
+    
     public Livro() {
         this.autores = new ArrayList<>();
     }
-
+    
     public String getNome() {
         return nome;
     }
-
+    
     public void setNome(String nome) {
         this.nome = nome;
     }
-
+    
     public int getIsbn() {
         return isbn;
     }
-
+    
     public void setIsbn(int isbn) {
         this.isbn = isbn;
     }
-
+    
     public Short getEdicao() {
         return edicao;
     }
-
+    
     public void setEdicao(Short edicao) {
         this.edicao = edicao;
     }
-
+    
     public TipoClassificacao getClassificacao() {
         return classificacao;
     }
-
+    
     public void setClassificacao(TipoClassificacao classificacao) {
         this.classificacao = classificacao;
     }
-
+    
     public TipoIdioma getIdioma() {
         return idioma;
     }
-
+    
     public void setIdioma(TipoIdioma idioma) {
         this.idioma = idioma;
     }
-
+    
     public LocalDate getAno_publicacao() {
         return ano_publicacao;
     }
-
+    
     public void setAno_publicacao(LocalDate ano_publicacao) {
         this.ano_publicacao = ano_publicacao;
     }
-
+    
     public Editora getEditora() {
         return editora;
     }
-
+    
     public void setEditora(Editora editora) {
         this.editora = editora;
     }
-
+    
     public List<Autor> getAutores() {
         return autores;
     }
-
+    
     public void setAutores(List<Autor> autores) {
-
+        
         this.autores = autores;
     }
-
+    
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
@@ -111,16 +111,10 @@ public class Livro extends Bean<Integer> {
         output.append("Editora: ").append(this.getEditora().getNome()).append("\n");
         output.append("Ano Publicação: ").append(this.getAno_publicacao()).append("\n");
         output.append("Autores: ").append("\n");
-
         for (Autor autor : autores) {
-            try {
-                output.append(DAOFactory.getInstance().getAutorDAO().get(autor.getCodigo())).append("\n");
-            } catch (SQLException ex) {
-                Logger.getLogger(Livro.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            output.append(autor);
         }
         return output.toString();
     }
-
+    
 }

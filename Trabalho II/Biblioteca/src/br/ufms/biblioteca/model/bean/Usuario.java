@@ -141,4 +141,12 @@ public abstract class Usuario extends Bean<Integer> implements Serializable {
         saida.append("Data Criação: ").append(data_at);
         return saida.toString();
     }
+
+    @Override
+    public Usuario clone() throws CloneNotSupportedException {
+        Usuario e = new Usuario() {
+        };
+        e.nome = this.nome;
+        return e;
+    }
 }

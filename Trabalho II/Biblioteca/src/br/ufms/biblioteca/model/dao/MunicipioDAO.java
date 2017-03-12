@@ -48,7 +48,7 @@ public class MunicipioDAO extends ReadWriteDAO<Municipio, Integer> {
      */
     @Override
     protected Municipio get(Connection conn, Integer codigo) throws SQLException {
-        final String sql = "SELECT * FROM Biblioteca.municipios WHERE codigo_ibge = ?";
+        final String sql = "SELECT * FROM Biblioteca.municipios WHERE id = ?";
         Municipio municipio = null;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, codigo);
@@ -127,6 +127,11 @@ public class MunicipioDAO extends ReadWriteDAO<Municipio, Integer> {
 
     @Override
     protected void delete(Connection conn, Integer codigo) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected Municipio get(Connection conn, String codigo) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

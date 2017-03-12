@@ -30,7 +30,7 @@ public class ProfessorDAO extends UsuarioDAO<Professor> {
     @Override
     protected void insertAbst(Connection conn, Professor bean) throws SQLException {
         final String sql = "INSERT INTO Biblioteca.professores (id, siap,is_substituto) VALUES ( ?,?,?)";
-
+        System.out.println("sechego aqui fudeu");
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, bean.getCodigo());
             ps.setInt(2, bean.getSiap());
@@ -42,7 +42,9 @@ public class ProfessorDAO extends UsuarioDAO<Professor> {
 
     @Override
     protected void updateAbst(Connection conn, Professor bean) throws SQLException {
-        final String sql = "UPDATE Biblioteca.professores SET siap = ?,is_substituto=?WHERE id = ?";
+        final String sql = "UPDATE Biblioteca.professores SET siap = ?,is_substituto=? WHERE id = ?";
+        
+        
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, bean.getSiap());
@@ -62,5 +64,7 @@ public class ProfessorDAO extends UsuarioDAO<Professor> {
         setGeneratedKey(p, rs.getInt("id"));
         return p;
     }
+
+ 
 
 }

@@ -126,7 +126,7 @@ public class LivroDAO extends ReadWriteDAO<Livro, Integer> {
             ps.setInt(7, bean.getEditora().getCodigo());
             ps.setInt(8, bean.getCodigo());
             ps.executeUpdate();
-            deleteHasAutor(conn,bean);
+            deleteHasAutor(conn, bean);
             for (Autor autor : bean.getAutores()) {
                 addHasAutor(conn, autor, bean.getCodigo(), 1);
             }
@@ -156,7 +156,7 @@ public class LivroDAO extends ReadWriteDAO<Livro, Integer> {
                     livro.setIsbn(rs.getInt("isbn"));
                     livro.setEdicao(rs.getShort("edicao"));
                     livro.setIdioma(TipoIdioma.setIdioma(rs.getString("idioma")));
-                    livro.setClassificacao(TipoClassificacao.valueOf(rs.getString("classificacao")));
+                    livro.setClassificacao(TipoClassificacao.valueOf(rs.getString("classificacao").toUpperCase()));
                     livro.setAno_publicacao(rs.getDate("ano_publi").toLocalDate());
                     livro.setEditora((Editora) DAOFactory.getInstance().getEditoraDAO().get(rs.getInt("id_editora")));
                     livro.getAutores().addAll(getHasAutor(conn, livro));
@@ -168,21 +168,21 @@ public class LivroDAO extends ReadWriteDAO<Livro, Integer> {
 
     @Override
     protected List<Livro> getAll(Connection conn) throws SQLException {
-        final String sql = "SELECT * FROM Biblioteca.editoras ";
+        final String sql = "SELECT * FROM Biblioteca.livros ";
         List<Livro> livros = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.execute();
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     Livro livro = new Livro();
                     setGeneratedKey(livro, rs.getInt("id"));
                     livro.setNome(rs.getString("nome"));
                     livro.setIsbn(rs.getInt("isbn"));
                     livro.setEdicao(rs.getShort("edicao"));
                     livro.setIdioma(TipoIdioma.valueOf(rs.getString("idioma")));
-                    livro.setClassificacao(TipoClassificacao.valueOf(rs.getString("classificacao")));
+                    livro.setClassificacao(TipoClassificacao.valueOf(rs.getString("classificacao").toUpperCase()));
                     livro.setAno_publicacao(rs.getDate("ano_publi").toLocalDate());
                     livro.setEditora((Editora) DAOFactory.getInstance().getEditoraDAO().get(rs.getInt("id_editora")));
+                    livro.getAutores().addAll(DAOFactory.getInstance().getAutorDAO().getAllLivro(conn, livro.getCodigo()));
                     livros.add(livro);
                 }
 
@@ -190,6 +190,29 @@ public class LivroDAO extends ReadWriteDAO<Livro, Integer> {
         }
 
         return livros;
+    }
+
+    @Override
+    protected Livro get(Connection conn, String codigo) throws SQLException {
+        final String sql = "SELECT * FROM Biblioteca.livros WHERE nome = ?";
+        Livro livro = new Livro();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, codigo);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.first()) {
+                    setGeneratedKey(livro, rs.getInt("id"));
+                    livro.setNome(rs.getString("nome"));
+                    livro.setIsbn(rs.getInt("isbn"));
+                    livro.setEdicao(rs.getShort("edicao"));
+                    livro.setIdioma(TipoIdioma.valueOf(rs.getString("idioma").toUpperCase()));
+                    livro.setClassificacao(TipoClassificacao.valueOf(rs.getString("classificacao").toUpperCase()));
+                    livro.setAno_publicacao(rs.getDate("ano_publi").toLocalDate());
+                    livro.setEditora((Editora) DAOFactory.getInstance().getEditoraDAO().get(rs.getInt("id_editora")));
+                    livro.getAutores().addAll(getHasAutor(conn, livro));
+                }
+            }
+        }
+        return livro;
     }
 
 }

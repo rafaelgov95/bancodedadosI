@@ -15,6 +15,7 @@ public class Editora extends Bean<Integer> {
 
     private String nome;
     private String cidade;
+
     public String getNome() {
         return nome;
     }
@@ -31,6 +32,12 @@ public class Editora extends Bean<Integer> {
         this.cidade = cidade;
     }
 
-    
+    @Override
+    public String toString() {
+        StringBuilder saida = new StringBuilder();
+        saida.append("Nome: ").append(nome).append("\n");
+        saida.append("Cidade: ").append(cidade).append("\n");
+        return saida.toString();
+    }
 
 }

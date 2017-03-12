@@ -102,7 +102,7 @@ public class EmprestimoDAO extends ReadWriteDAO<Emprestimo, Integer> {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.execute();
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     Emprestimo emprestimo = new Emprestimo();
                     setGeneratedKey(emprestimo, rs.getInt("id"));
                     emprestimo.setAtiva(rs.getBoolean("is_ativo"));
@@ -115,6 +115,11 @@ public class EmprestimoDAO extends ReadWriteDAO<Emprestimo, Integer> {
         }
 
         return emprestimos;
+    }
+
+    @Override
+    protected Emprestimo get(Connection conn, String codigo) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

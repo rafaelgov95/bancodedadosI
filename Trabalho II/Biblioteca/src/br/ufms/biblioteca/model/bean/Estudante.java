@@ -5,18 +5,13 @@
  */
 package br.ufms.biblioteca.model.bean;
 
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.io.Serializable;
 
 /**
  *
  * @author rafael
  */
-public class Estudante extends Usuario {
+public class Estudante extends Usuario implements Serializable {
 
     private String rga;
 

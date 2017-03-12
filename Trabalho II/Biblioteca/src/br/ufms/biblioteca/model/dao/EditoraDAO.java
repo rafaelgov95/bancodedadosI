@@ -35,18 +35,14 @@ public class EditoraDAO extends ReadWriteDAO<Editora, Integer> {
     protected void insert(Connection conn, Editora bean, Serializable... dependencies) throws SQLException {
         final String sql = "INSERT INTO Biblioteca.editoras (nome, cidade) VALUES (?, ?)";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, bean.getNome());
             ps.setString(2, bean.getCidade());
             ps.executeUpdate();
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.first()) {
-                    setGeneratedKey(bean, rs.getInt(1));
-                }
-            }
 
         }
+//        conn.commit();
     }
 
     @Override
@@ -71,7 +67,7 @@ public class EditoraDAO extends ReadWriteDAO<Editora, Integer> {
             ps.setInt(1, codigo);
             ps.execute();
         }
-        conn.commit();
+
     }
 
     @Override
@@ -90,8 +86,30 @@ public class EditoraDAO extends ReadWriteDAO<Editora, Integer> {
         }
         return editora;
     }
-      protected Editora getFindName(Connection conn, String codigo) throws SQLException {
-        final String sql = "SELECT * FROM Biblioteca.autores WHERE name = ?";
+
+
+    @Override
+    protected List<Editora> getAll(Connection conn) throws SQLException {
+        final String sql = "SELECT * FROM Biblioteca.editoras";
+        List<Editora> editoras = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql,PreparedStatement.NO_GENERATED_KEYS)) {
+       
+            try (ResultSet rs = ps.executeQuery()) {
+               while (rs.next()) {
+                    Editora editora = new Editora();
+                    setGeneratedKey(editora, rs.getInt("id"));
+                    editora.setNome(rs.getString("nome"));
+                    editora.setCidade(rs.getString("cidade"));
+                    editoras.add(editora);
+                }
+            }
+        }
+        return editoras;
+    }
+
+    @Override
+    protected Editora get(Connection conn, String codigo) throws SQLException {
+        final String sql = "SELECT * FROM Biblioteca.editoras WHERE nome = ?";
         Editora editora = new Editora();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, codigo);
@@ -104,25 +122,6 @@ public class EditoraDAO extends ReadWriteDAO<Editora, Integer> {
             }
         }
         return editora;
-    }
-
-    @Override
-    protected List<Editora> getAll(Connection conn) throws SQLException {
-        final String sql = "SELECT * FROM Biblioteca.editoras ";
-        List<Editora> editoras = new ArrayList<>();
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.execute();
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Editora editora = new Editora();
-                    setGeneratedKey(editora, rs.getInt("id"));
-                    editora.setNome(rs.getString("nome"));
-                    editora.setCidade(rs.getString("cidade"));
-                    editoras.add(editora);
-                }
-            }
-        }
-        return editoras;
     }
 
 }

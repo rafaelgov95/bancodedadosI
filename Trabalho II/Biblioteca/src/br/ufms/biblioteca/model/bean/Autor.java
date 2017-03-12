@@ -39,8 +39,8 @@ public class Autor extends Bean<Integer> {
     @Override
     public String toString() {
         StringBuilder saida = new StringBuilder();
-        saida.append("Nome do Autor: ").append(nome).append("\n");
-        saida.append("Nacionalidade do Autor: ").append(nacionalidade).append("\n");
+        saida.append("         Nome do Autor: ").append(nome).append("\n");
+        saida.append("         Nacionalidade do Autor: ").append(nacionalidade).append("\n");
         return saida.toString();
     }
 }

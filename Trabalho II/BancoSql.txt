@@ -1,0 +1,189 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `Biblioteca` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+
+CREATE TABLE IF NOT EXISTS `Biblioteca`.`usuarios` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `curso` VARCHAR(45) NULL DEFAULT NULL,
+  `cpf` CHAR(11) NULL DEFAULT NULL,
+  `titulacao` VARCHAR(45) NULL DEFAULT NULL,
+  `data_inicio_contrato` DATE NOT NULL,
+  `data_fim_contrato` DATE NOT NULL,
+  `data_nascimento` DATE NULL DEFAULT NULL,
+  `data_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `Biblioteca`.`telefones` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `ddd` VARCHAR(3) NOT NULL,
+  `numero` VARCHAR(11) NOT NULL,
+  `tipo` VARCHAR(45) NULL DEFAULT NULL,
+  `is_principal` TINYINT(1) NULL DEFAULT NULL,
+  `id_usuario` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Phone_User1_idx` (`id_usuario` ASC),
+  CONSTRAINT `fk_Phone_User1`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `Biblioteca`.`usuarios` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `Biblioteca`.`enderecos` (
+  `id` INT(11) NULL DEFAULT NULL AUTO_INCREMENT,
+  `rua` VARCHAR(45) NOT NULL,
+  `numero` INT(11) NULL DEFAULT NULL,
+  `s_n` TINYINT(1) NULL DEFAULT NULL,
+  `complemento` VARCHAR(45) NULL DEFAULT '',
+  `bairro` VARCHAR(45) NOT NULL,
+  `cep` VARCHAR(45) NOT NULL,
+  `id_usuario` INT(11) NOT NULL,
+  `id_municipio` INT(11) NOT NULL,
+  INDEX `fk_Address_User1_idx` (`id_usuario` ASC),
+  INDEX `fk_Address_County1_idx` (`id_municipio` ASC),
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_Address_User1`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `Biblioteca`.`usuarios` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Address_County1`
+    FOREIGN KEY (`id_municipio`)
+    REFERENCES `Biblioteca`.`municipios` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `Biblioteca`.`municipios` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `ibge` INT(11) NOT NULL,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  `UF` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `Biblioteca`.`livros` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  `isbn` INT(11) NULL DEFAULT NULL,
+  `edicao` INT(11) NULL DEFAULT NULL,
+  `classificacao` VARCHAR(45) NULL DEFAULT NULL,
+  `idioma` VARCHAR(45) NULL DEFAULT NULL,
+  `ano_publi` DATE NULL DEFAULT NULL,
+  `id_editora` INT(11) NOT NULL,
+  PRIMARY KEY (`id`, `id_editora`),
+  INDEX `fk_livros_editoras1_idx` (`id_editora` ASC),
+  CONSTRAINT `fk_livros_editoras1`
+    FOREIGN KEY (`id_editora`)
+    REFERENCES `Biblioteca`.`editoras` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `Biblioteca`.`autores` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  `nacionalidade` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `Biblioteca`.`editoras` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `cidade` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `Biblioteca`.`emprestimos` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `data_emprestimo` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_ativo` TINYINT(1) NULL DEFAULT NULL,
+  `id_usuario` INT(11) NOT NULL,
+  `id_livro` INT(11) NOT NULL,
+  PRIMARY KEY (`id`, `id_usuario`, `id_livro`),
+  INDEX `fk_book_has_User_User1_idx` (`id_usuario` ASC),
+  INDEX `fk_book_has_User_book1_idx` (`id_livro` ASC),
+  CONSTRAINT `fk_book_has_User_book1`
+    FOREIGN KEY (`id_livro`)
+    REFERENCES `Biblioteca`.`livros` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_book_has_User_User1`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `Biblioteca`.`usuarios` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `Biblioteca`.`professores` (
+  `id` INT(11) NOT NULL,
+  `siap` INT(11) NOT NULL,
+  `is_substituto` TINYINT(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_professores_usuarios1`
+    FOREIGN KEY (`id`)
+    REFERENCES `Biblioteca`.`usuarios` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `Biblioteca`.`livros_has_autores` (
+  `id_livro` INT(11) NOT NULL,
+  `id_autor` INT(11) NOT NULL,
+  PRIMARY KEY (`id_livro`, `id_autor`),
+  INDEX `fk_livros_has_autores_autores1_idx` (`id_autor` ASC),
+  INDEX `fk_livros_has_autores_livros1_idx` (`id_livro` ASC),
+  CONSTRAINT `fk_livros_has_autores_livros1`
+    FOREIGN KEY (`id_livro`)
+    REFERENCES `Biblioteca`.`livros` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_livros_has_autores_autores1`
+    FOREIGN KEY (`id_autor`)
+    REFERENCES `Biblioteca`.`autores` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+CREATE TABLE IF NOT EXISTS `Biblioteca`.`estudantes` (
+  `id` INT(11) NOT NULL,
+  `rga` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_estudantes_usuarios1`
+    FOREIGN KEY (`id`)
+    REFERENCES `Biblioteca`.`usuarios` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+

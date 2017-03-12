@@ -27,11 +27,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Classe responsável pelas operações de leitura e escrita na tabela endereco.
- *
- * @author Kleber Kruger
- */
 public class EnderecoDAO extends ReadWriteDAO<Endereco, Integer> {
 
     protected EnderecoDAO() {
@@ -111,7 +106,7 @@ public class EnderecoDAO extends ReadWriteDAO<Endereco, Integer> {
      */
     @Override
     protected void delete(Connection conn, Integer codigo) throws SQLException {
-        final String sql = "DELETE FROM desafio.endereco WHERE codigo = ?";
+        final String sql = "DELETE FROM Biblioteca.enderecos WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, codigo);
             ps.executeUpdate();
@@ -160,6 +155,24 @@ public class EnderecoDAO extends ReadWriteDAO<Endereco, Integer> {
         return enderecos;
     }
 
+    public List<Endereco> getAllID(Integer codigo) throws SQLException {
+        try (Connection conn = db.getConnection()) {
+            final String sql = "SELECT * FROM Biblioteca.enderecos WHERE id_usuario = ?";
+            List<Endereco> enderecos = new ArrayList<>();
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setLong(1, codigo);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.first()) {
+                        Endereco endereco = resultSetToBean(conn, rs);
+
+                        enderecos.add(endereco);
+                    }
+                }
+            }
+            return enderecos;
+        }
+    }
+
     /**
      *
      * @param conn
@@ -190,7 +203,7 @@ public class EnderecoDAO extends ReadWriteDAO<Endereco, Integer> {
      */
     private Endereco resultSetToBean(Connection conn, ResultSet rs) throws SQLException {
         Endereco endereco = new Endereco();
-        setGeneratedKey(endereco, rs.getInt("codigo"));
+        setGeneratedKey(endereco, rs.getInt("id"));
         endereco.setRua(rs.getString("rua"));
         endereco.setNumero(rs.getShort("numero"));
         endereco.setSemNumero(rs.getBoolean("s_n"));
@@ -200,6 +213,11 @@ public class EnderecoDAO extends ReadWriteDAO<Endereco, Integer> {
         endereco.setMunicipio(DAOFactory.getInstance().getMunicipioDAO().get(rs.getInt("id_municipio")));
 
         return endereco;
+    }
+
+    @Override
+    protected Endereco get(Connection conn, String codigo) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

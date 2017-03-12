@@ -10,12 +10,12 @@ package br.ufms.biblioteca.model.bean.enumerate;
  * @author rafael
  */
 public enum TipoCurso {
-    SISTEMA_DE_INFORMACAO, DIREITO, HISTORIA, LETRAS, QUIMICA, MATEMATICA, FISICA, ANALISE_DE_SISTEMAS;
+    SISTEMAS_DE_INFORMACAO, DIREITO, HISTORIA, LETRAS, QUIMICA, MATEMATICA, FISICA, ANALISE_DE_SISTEMAS;
 
     @Override
     public String toString() {
         switch (this) {
-            case SISTEMA_DE_INFORMACAO:
+            case SISTEMAS_DE_INFORMACAO:
                 return "SISTEMAS DE INFORMAÇÂO";
             case DIREITO:
                 return "DIREITO";
@@ -39,7 +39,7 @@ public enum TipoCurso {
     public static TipoCurso setCurso(String curso) {
         switch (curso) {
             case "SISTEMAS DE INFORMAÇÂO":
-                return SISTEMA_DE_INFORMACAO;
+                return SISTEMAS_DE_INFORMACAO;
             case "DIREITO":
                 return DIREITO;
             case "HISTORIA":

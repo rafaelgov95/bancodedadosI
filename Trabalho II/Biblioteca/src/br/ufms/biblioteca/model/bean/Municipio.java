@@ -57,5 +57,14 @@ public class Municipio extends Bean<Integer> implements Serializable {
         this.ibge = ibge;
     }
 
-   
+    @Override
+    public String toString() {
+        StringBuilder saida = new StringBuilder();
+        saida.append("     Municipio:").append("\n");
+        saida.append("           Ibge: ").append(ibge).append("\n");
+        saida.append("           Nome: ").append(nome).append("\n");
+        saida.append("           UF: ").append(uf.toString());
+        return saida.toString();
+    }
+
 }

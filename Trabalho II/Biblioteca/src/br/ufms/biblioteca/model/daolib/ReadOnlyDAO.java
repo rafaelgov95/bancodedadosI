@@ -78,7 +78,17 @@ public abstract class ReadOnlyDAO<B extends Bean<T>, T extends Serializable> {
         return bean;
     }
 
+    public B get(String codigo) throws SQLException {
+        B bean;
+        try (Connection conn = db.getConnection()) {
+            bean = get(conn, codigo);
+        }
+        return bean;
+    }
+
     protected abstract B get(Connection conn, T codigo) throws SQLException;
+
+    protected abstract B get(Connection conn, String codigo) throws SQLException;
 
     /**
      * Carrega do banco de dados a lista de todos os obhetos do tipo Bean.

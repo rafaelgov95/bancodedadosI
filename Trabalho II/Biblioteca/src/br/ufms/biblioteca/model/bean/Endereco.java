@@ -25,9 +25,9 @@ import java.io.Serializable;
  * @author Kleber Kruger
  */
 public class Endereco extends Bean<Integer> implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
-
+    
     private String rua;
     private Short numero;
     private Boolean sn;
@@ -42,13 +42,11 @@ public class Endereco extends Bean<Integer> implements Serializable {
     public Endereco() {
         super();
     }
-
-   
+    
     public String getRua() {
         return rua;
     }
-
-   
+    
     public void setRua(String rua) {
         this.rua = rua;
     }
@@ -136,5 +134,23 @@ public class Endereco extends Bean<Integer> implements Serializable {
     public void setMunicipio(Municipio municipio) {
         this.municipio = municipio;
     }
-
+    
+    @Override
+    public String toString() {
+        StringBuilder saida = new StringBuilder();
+        saida.append("     Rua: ").append(rua).append("\n");
+        
+        saida.append("     Numero: ").append(numero).append("\n");
+        
+        saida.append("     Bairro: ").append(bairro).append("\n");
+        
+        saida.append("     Compemento: ").append(complemento).append("\n");
+        
+        saida.append("     CEP: ").append(cep).append("\n");
+        
+        saida.append("     Sem Numero: ").append(sn.toString()).append("\n");
+        saida.append(municipio).append("\n");
+        return saida.toString();
+    }
+    
 }

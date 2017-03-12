@@ -91,22 +91,6 @@ public class AutorDAO extends ReadWriteDAO<Autor, Integer> {
         return autor;
     }
 
-    protected Autor getFindName(Connection conn, String codigo) throws SQLException {
-        final String sql = "SELECT * FROM Biblioteca.autores WHERE name = ?";
-        Autor autor = new Autor();
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, codigo);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.first()) {
-                    setGeneratedKey(autor, rs.getInt("id"));
-                    autor.setNome(rs.getString("nome"));
-                    autor.setNacionalidade(TipoNacionalidade.valueOf(rs.getString("nacionalidade")));
-                }
-            }
-        }
-        return autor;
-    }
-
     @Override
     protected List<Autor> getAll(Connection conn) throws SQLException {
         final String sql = "SELECT * FROM Biblioteca.autores ";
@@ -114,11 +98,11 @@ public class AutorDAO extends ReadWriteDAO<Autor, Integer> {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.execute();
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     Autor autor = new Autor();
                     setGeneratedKey(autor, rs.getInt("id"));
                     autor.setNome(rs.getString("nome"));
-                    autor.setNacionalidade(TipoNacionalidade.valueOf(rs.getString("nacionalidade")));
+                    autor.setNacionalidade(TipoNacionalidade.valueOf(rs.getString("nacionalidade").toUpperCase()));
                     autores.add(autor);
                 }
             }
@@ -126,4 +110,34 @@ public class AutorDAO extends ReadWriteDAO<Autor, Integer> {
         return autores;
     }
 
+    @Override
+    protected Autor get(Connection conn, String codigo) throws SQLException {
+        final String sql = "SELECT * FROM Biblioteca.autores WHERE nome = ?";
+        Autor autor = new Autor();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, codigo);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.first()) {
+                    setGeneratedKey(autor, rs.getInt("id"));
+                    autor.setNome(rs.getString("nome"));
+                    autor.setNacionalidade(TipoNacionalidade.valueOf(rs.getString("nacionalidade").toUpperCase()));
+                }
+            }
+        }
+        return autor;
+    }
+
+    protected List<Autor> getAllLivro(Connection conn, int codigo) throws SQLException {
+        final String sql = "SELECT * FROM livros_has_autores where id_livro=?";
+        List<Autor> autores = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, codigo);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    autores.add(DAOFactory.getInstance().getAutorDAO().get(rs.getInt("id_autor")));
+                }
+            }
+        }
+        return autores;
+    }
 }
